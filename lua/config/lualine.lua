@@ -1,8 +1,8 @@
 require("lualine").setup({
 	options = {
 		icons_enabled = true,
-		theme = "tokyonight",
-		component_separators = { "│", "│" },
+		theme = "gruvbox",
+		component_separators = { "|", "|" },
 		section_separators = { "", "" },
 		disabled_filetypes = {},
 	},
@@ -10,7 +10,22 @@ require("lualine").setup({
 		lualine_a = { "mode" },
 		lualine_b = { "branch" },
 		lualine_c = { "filename" },
-		lualine_x = { "filetype" },
+		lualine_x = {
+			{
+				"diagnostics",
+				-- table of diagnostic sources, available sources:
+				-- nvim_lsp, coc, ale, vim_lsp
+				sources = { "nvim_lsp" },
+				-- displays diagnostics from defined severity
+				sections = { "error", "warn", "info", "hint" },
+				-- all colors are in format #rrggbb
+				color_error = nil, -- changes diagnostic's error foreground color
+				color_warn = nil, -- changes diagnostic's warn foreground color
+				color_info = nil, -- Changes diagnostic's info foreground color
+				color_hint = nil, -- Changes diagnostic's hint foreground color
+				-- symbols = { error = "E", warn = "W", info = "I", hint = "H" },
+			},
+		},
 		lualine_y = { "progress" },
 		lualine_z = { "location" },
 	},

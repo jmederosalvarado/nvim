@@ -130,24 +130,18 @@ local plugins = function(use)
 	-- appearance {{{
 
 	use({
-		"rktjmp/lush.nvim",
-	})
-	use({
 		-- "ful1e5/onedark.nvim",
-		-- "Pocco81/Catppuccino.nvim",
-		"folke/tokyonight.nvim",
+		-- "folke/tokyonight.nvim",
+		-- "projekt0n/github-nvim-theme",
+		-- "wadackel/vim-dogrun",
+		"ellisonleao/gruvbox.nvim",
 		requires = {
+			"rktjmp/lush.nvim",
 			-- other ui themes
 			"hoob3rt/lualine.nvim",
 			"kyazdani42/nvim-tree.lua",
 		},
 		config = use_config({ "config.lualine", "config.tree", "config.colors" }),
-	})
-	use({ "romgrk/barbar.nvim", disable = true })
-	use({
-		"karb94/neoscroll.nvim",
-		config = use_setup("neoscroll"),
-		disable = true,
 	})
 	use("psliwka/vim-smoothie")
 	use({
@@ -232,9 +226,7 @@ require("packer").startup({
 	config = {
 		display = {
 			profile = true,
-			open_fn = function()
-				return require("packer.util").float({ border = "solid" })
-			end,
+			open_fn = require("packer.util").float
 		},
 	},
 })
