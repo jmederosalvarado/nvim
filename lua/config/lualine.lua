@@ -11,6 +11,7 @@ require("lualine").setup({
 		lualine_b = { "branch" },
 		lualine_c = { "filename" },
 		lualine_x = {
+			require("nvim-lightbulb").get_status_text,
 			{
 				"diagnostics",
 				-- table of diagnostic sources, available sources:
@@ -19,11 +20,11 @@ require("lualine").setup({
 				-- displays diagnostics from defined severity
 				sections = { "error", "warn", "info", "hint" },
 				-- all colors are in format #rrggbb
-				color_error = nil, -- changes diagnostic's error foreground color
-				color_warn = nil, -- changes diagnostic's warn foreground color
-				color_info = nil, -- Changes diagnostic's info foreground color
-				color_hint = nil, -- Changes diagnostic's hint foreground color
-				-- symbols = { error = "E", warn = "W", info = "I", hint = "H" },
+				-- color_error = nil, -- changes diagnostic's error foreground color
+				-- color_warn = nil, -- changes diagnostic's warn foreground color
+				-- color_info = nil, -- Changes diagnostic's info foreground color
+				-- color_hint = nil, -- Changes diagnostic's hint foreground color
+				symbols = { error = " ", warn = " ", info = " ", hint = " " },
 			},
 		},
 		lualine_y = { "progress" },

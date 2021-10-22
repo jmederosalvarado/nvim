@@ -47,3 +47,5 @@ vim.g.maplocalleader = "\\"
 
 -- disable mode display
 vim.o.showmode = false
+
+vim.g.swapfile = false

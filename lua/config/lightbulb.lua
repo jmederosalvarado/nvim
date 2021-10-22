@@ -1,12 +1,12 @@
 local lightbulb = require("nvim-lightbulb")
 
-local lightbulb_sign = ""
+local lightbulb_sign = "⚡"
 
 local old_update_lightbulb = lightbulb.update_lightbulb
 lightbulb.update_lightbulb = function()
 	return old_update_lightbulb({
 		sign = {
-			enabled = true,
+			enabled = false,
 			priority = 10,
 		},
 		float = {
@@ -26,5 +26,5 @@ lightbulb.update_lightbulb = function()
 	})
 end
 
-vim.fn.sign_define("LightBulbSign", { text = lightbulb_sign, texthl = "LspDiagnosticsDefaultInformation" })
+vim.fn.sign_define("LightBulbSign", { text = lightbulb_sign, texthl = "DiagnosticSignHint" })
 vim.cmd([[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]])

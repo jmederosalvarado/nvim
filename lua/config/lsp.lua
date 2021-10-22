@@ -5,22 +5,10 @@ vim.diagnostic.config({
 	update_in_insert = true,
 })
 
-vim.fn.sign_define(
-	"DiagnosticSignError",
-	{ text = " ", texthl = "LspDiagnosticsDefaultError", numhl = "LspDiagnosticsDefaultError" }
-)
-vim.fn.sign_define(
-	"DiagnosticSignWarn",
-	{ text = " ", texthl = "LspDiagnosticsDefaultWarning", numhl = "LspDiagnosticsDefaultWarning" }
-)
-vim.fn.sign_define(
-	"DiagnosticSignInfo",
-	{ text = " ", texthl = "LspDiagnosticsDefaultInfo", numhl = "LspDiagnosticsDefaultInfo" }
-)
-vim.fn.sign_define(
-	"DiagnosticSignHint",
-	{ text = " ", texthl = "LspDiagnosticsDefaultHint", numhl = "LspDiagnosticsDefaultHint" }
-)
+vim.fn.sign_define("DiagnosticSignError", { text = " ", texthl = "DiagnosticSignError", numhl = "DiagnosticError" })
+vim.fn.sign_define("DiagnosticSignWarn", { text = " ", texthl = "DiagnosticSignWarn", numhl = "DiagnosticWarning" })
+vim.fn.sign_define("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticSignInfo", numhl = "DiagnosticInfo" })
+vim.fn.sign_define("DiagnosticSignHint", { text = " ", texthl = "DiagnosticSignHint", numhl = "DiagnosticHint" })
 
 local default_on_attach = function(_, bufnr)
 	local opts = { buffer = bufnr, silent = true }
