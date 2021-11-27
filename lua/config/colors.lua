@@ -4,4 +4,5 @@ vim.g.tokyonight_lualine_bold = true
 
 vim.g.gruvbox_contrast_dark = "hard"
 vim.g.gruvbox_sign_column = "bg0"
+vim.g.gruvbox_bold = 0
 vim.cmd("colorscheme gruvbox")

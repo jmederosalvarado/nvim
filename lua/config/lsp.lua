@@ -10,7 +10,7 @@ vim.fn.sign_define("DiagnosticSignWarn", { text = " ", texthl = "DiagnosticSi
 vim.fn.sign_define("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticSignInfo", numhl = "DiagnosticInfo" })
 vim.fn.sign_define("DiagnosticSignHint", { text = " ", texthl = "DiagnosticSignHint", numhl = "DiagnosticHint" })
 
-local default_on_attach = function(_, bufnr)
+local default_on_attach = function(client, bufnr)
 	local opts = { buffer = bufnr, silent = true }
 
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -27,13 +27,21 @@ local default_on_attach = function(_, bufnr)
 	vim.keymap.nnoremap({ "<leader>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<cr>" }, opts)
 	vim.keymap.nnoremap({ "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<cr>" }, opts)
 
-	vim.keymap.nnoremap({ "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>" }, opts)
+	vim.keymap.nnoremap({ "<leader>cc", "<cmd>lua vim.lsp.buf.code_action()<cr>" }, opts)
 	vim.keymap.nnoremap({ "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>" }, opts)
 
 	vim.keymap.nnoremap({ "<leader>e", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>" }, opts)
 	vim.keymap.nnoremap({ "<leader>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>" }, opts)
 	vim.keymap.nnoremap({ "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>" }, opts)
 	vim.keymap.nnoremap({ "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<cr>" }, opts)
+
+	client.resolved_capabilities.document_formatting = true
+	vim.cmd("command! Format lua vim.lsp.buf.formatting_sync()")
+	vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting_sync()")
+
+	if client.name == "pyright" or client.name == "sumneko_lua" then
+		client.resolved_capabilities.document_formatting = false
+	end
 end
 
 local server_setups = {}
@@ -48,7 +56,7 @@ server_setups["default"] = {
 
 -- Lua {{{
 
-server_setups["lua"] = require("lua-dev").setup({
+server_setups["sumneko_lua"] = require("lua-dev").setup({
 	lspconfig = {
 		on_attach = default_on_attach,
 	},
@@ -58,13 +66,8 @@ server_setups["lua"] = require("lua-dev").setup({
 
 -- Rust {{{
 
-server_setups["rust"] = {
-	on_attach = function(client, bufnr)
-		default_on_attach(client, bufnr)
-		client.resolved_capabilities.document_formatting = true
-		vim.cmd("command! Format lua vim.lsp.buf.formatting_sync()")
-		vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting_sync()")
-	end,
+server_setups["rust-analyzer"] = {
+	on_attach = default_on_attach,
 	settings = {
 		["rust-analyzer.checkOnSave.command"] = "clippy",
 	},
@@ -74,7 +77,7 @@ server_setups["rust"] = {
 
 -- Typescript & Javascript {{{
 
-server_setups["typescript"] = {
+server_setups["tsserver"] = {
 	on_attach = function(client, bufnr)
 		default_on_attach(client, bufnr)
 
@@ -140,44 +143,24 @@ server_setups["null-ls"] = function()
 			null_ls.builtins.formatting.shfmt.with({
 				filetypes = vim.fn.extend(null_ls.builtins.formatting.shfmt.filetypes, { "zsh", "bash" }),
 			}),
-			null_ls.builtins.formatting.format_r
 		},
 	})
 	return {
-		on_attach = function(client, bufnr)
-			default_on_attach(client, bufnr)
-			client.resolved_capabilities.document_formatting = true
-			vim.cmd("command! Format lua vim.lsp.buf.formatting_sync()")
-			vim.cmd("autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting_sync()")
-		end,
+		on_attach = default_on_attach,
 	}
 end
 
 -- }}}
 
-local lspinstall = require("lspinstall")
+local lspinstaller = require("nvim-lsp-installer")
 
-local setup_servers = function()
-	lspinstall.setup()
-	local servers = lspinstall.installed_servers()
-	table.insert(servers, "null-ls")
-	table.insert(servers, "r_language_server")
-	for _, server in pairs(servers) do
-		local server_setup = server_setups[server] or server_setups["default"]
-		local config = type(server_setup) == "function" and server_setup() or server_setup
-		config.capabilities = require("cmp_nvim_lsp").update_capabilities(
-			config.capabilities or vim.lsp.protocol.make_client_capabilities()
-		)
-		require("lspconfig")[server].setup(config)
-	end
-end
-
--- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
-lspinstall.post_install_hook = function()
-	setup_servers() -- reload installed servers
-	vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
-end
-
-setup_servers()
+lspinstaller.on_server_ready(function(server)
+    local server_setup = server_setups[server] or server_setups["default"]
+    local config = type(server_setup) == "function" and server_setup() or server_setup
+    config.capabilities = require("cmp_nvim_lsp").update_capabilities(
+        config.capabilities or vim.lsp.protocol.make_client_capabilities()
+    )
+    server:setup(config)
+end)
 
 -- vim.lsp.set_log_level("debug")

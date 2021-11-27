@@ -1,7 +1,7 @@
 -- tabs, spaces and indentation
-vim.o.tabstop = 2 -- tab width in spaces
-vim.o.softtabstop = 2
-vim.o.shiftwidth = 2 -- number of spaces to use for each step of (auto)indent
+vim.o.tabstop = 4 -- tab width in spaces
+vim.o.softtabstop = 4
+vim.o.shiftwidth = 4 -- number of spaces to use for each step of (auto)indent
 vim.o.shiftround = true -- round indent to multiple of 'shiftwidth'
 vim.o.expandtab = true
 vim.o.smarttab = true
@@ -48,4 +48,4 @@ vim.g.maplocalleader = "\\"
 -- disable mode display
 vim.o.showmode = false
 
-vim.g.swapfile = false
+vim.o.swapfile = false

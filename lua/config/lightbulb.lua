@@ -1,6 +1,6 @@
 local lightbulb = require("nvim-lightbulb")
 
-local lightbulb_sign = "⚡"
+local lightbulb_sign = " "
 
 local old_update_lightbulb = lightbulb.update_lightbulb
 lightbulb.update_lightbulb = function()

@@ -50,7 +50,7 @@ local plugins = function(use)
 		"neovim/nvim-lspconfig",
 		requires = {
 			-- "nvim-lua/lsp_extensions.nvim",
-			"kabouzeid/nvim-lspinstall",
+			"williamboman/nvim-lsp-installer",
 			"folke/lua-dev.nvim",
 			"jose-elias-alvarez/null-ls.nvim",
 			"jose-elias-alvarez/nvim-lsp-ts-utils",
@@ -77,7 +77,7 @@ local plugins = function(use)
 				config = use_config("config.cmp"),
 			},
 		},
-		config = use_config({ "fixes.lsp", "config.lsp" }),
+		config = use_config("config.lsp"),
 		disable = false,
 	})
 
@@ -88,13 +88,16 @@ local plugins = function(use)
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			"RRethy/nvim-treesitter-textsubjects",
 		},
-		config = use_config({ "fixes.treesitter", "config.treesitter" }),
+		config = use_config("config.treesitter"),
 	})
 
 	use({
 		"nvim-telescope/telescope.nvim",
 		config = use_config("config.telescope"),
 		requires = {
+			-- "brandoncc/telescope-harpoon.nvim",
+			"ThePrimeagen/harpoon",
+            { 'nvim-telescope/telescope-fzf-native.nvim', run = "make"},
 			"nvim-lua/popup.nvim",
 			"nvim-lua/plenary.nvim",
 		},
@@ -110,9 +113,7 @@ local plugins = function(use)
 	})
 	use({
 		"pwntester/octo.nvim",
-		config = function()
-			require("octo").setup()
-		end,
+		config = use_setup("octo"),
 	})
 	use({
 		"TimUntersberger/neogit",
@@ -122,7 +123,7 @@ local plugins = function(use)
 	use({
 		"lewis6991/gitsigns.nvim",
 		requires = "nvim-lua/plenary.nvim",
-		config = use_setup("gitsigns"),
+		config = use_config("config.gitsigns"),
 	})
 
 	-- }}}
@@ -226,7 +227,7 @@ require("packer").startup({
 	config = {
 		display = {
 			profile = true,
-			open_fn = require("packer.util").float
+			open_fn = require("packer.util").float,
 		},
 	},
 })
