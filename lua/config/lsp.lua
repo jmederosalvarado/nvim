@@ -163,4 +163,4 @@ lspinstaller.on_server_ready(function(server)
     server:setup(config)
 end)
 
--- vim.lsp.set_log_level("debug")
+vim.lsp.set_log_level(vim.lsp.log_levels.INFO)

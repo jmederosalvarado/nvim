@@ -1,20 +1,13 @@
 require("nvim-treesitter.configs").setup({
 	highlight = { enable = true },
-	incremental_selection = { enable = true },
+	incremental_selection = { enable = false },
 	indent = { enable = true, disable = { "python", "yaml" } },
 	autopairs = { enable = true },
 	autotag = { enable = true },
 	matchup = { enable = true },
-	textsubjects = {
-        enable = true,
-        keymaps = {
-            ['.'] = 'textsubjects-smart',
-            [';'] = 'textsubjects-container-outer',
-        }
-    },
 
 	playground = {
-		enable = true,
+		enable = false,
 		disable = {},
 		updatetime = 25,
 		persist_queries = false,

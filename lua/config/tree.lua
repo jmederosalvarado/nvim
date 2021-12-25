@@ -1,8 +1,4 @@
-vim.g.nvim_tree_width = 50
--- vim.g.nvim_tree_follow = 1
--- vim.g.nvim_tree_lsp_diagnostics = 1
 vim.g.nvim_tree_quit_on_open = 1
-vim.g.nvim_tree_ignore = { ".git", "node_modules" }
 
 vim.g.nvim_tree_special_files = {}
 vim.g.nvim_tree_git_hl = 1
@@ -45,8 +41,6 @@ vim.g.nvim_tree_icons = {
 
 local tree = require("nvim-tree")
 
-local tree_width = 30
-
 tree.setup({
 	disable_netrw = true,
 	hijack_netrw = true,
@@ -66,8 +60,11 @@ tree.setup({
 		args = {},
 	},
 	view = {
-		width = tree_width,
+		width = 50,
 	},
+    filters = {
+        custom = { ".git", "node_modules" }
+    }
 })
 
 vim.cmd("nnoremap <silent> <C-n> :NvimTreeToggle<CR>")
