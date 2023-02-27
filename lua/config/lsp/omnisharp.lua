@@ -1,23 +1,28 @@
-local utils = require("config.lsp.utils")
+local util = require("lspconfig.util")
 
 ---Finds the possible Targets
 ---@param fname string @The name of the file to find possible targets for
 ---@return string[] @The possible targets.
 local function find_possible_targets(fname)
 	local targets = {}
-	local sln_matcher = utils.matcher_for_pattern("*sln")
-	local csproj_matcher = utils.matcher_for_pattern("*csproj")
-	for path in utils.path.iterate_parents(fname) do
-		local sln_targets = sln_matcher(path)
-		if #sln_targets > 0 then
-			vim.list_extend(targets, sln_targets)
-			break
-		end
-		vim.list_extend(targets, vim.tbl_map(utils.path.dirname, csproj_matcher(path)))
+
+	local sln_dir = util.root_pattern("*sln")(fname)
+	if sln_dir then
+		vim.list_extend(targets, vim.fn.glob(util.path.join(sln_dir, "*.sln"), true, true))
+	end
+
+	local csproj_dir = util.root_pattern("*csproj")(fname)
+	if csproj_dir then
+		table.insert(targets, csproj_dir)
+	end
+
+	local git_dir = util.root_pattern(".git")(fname)
+	if git_dir and not vim.tbl_contains(targets, git_dir) then
+		table.insert(targets, git_dir)
 	end
 
 	local cwd = vim.fn.getcwd()
-	if utils.path.is_descendant(cwd, fname) and not vim.tbl_contains(targets, cwd) then
+	if util.path.is_descendant(cwd, fname) and not vim.tbl_contains(targets, cwd) then
 		table.insert(targets, cwd)
 	end
 
@@ -46,11 +51,11 @@ function M.init_buf_targets(bufnr)
 	end
 
 	local bufname = vim.api.nvim_buf_get_name(bufnr)
-	if not utils.bufname_valid(bufname) then
+	if not util.bufname_valid(bufname) then
 		return
 	end
 
-	local bufpath = utils.path.sanitize(bufname)
+	local bufpath = util.path.sanitize(bufname)
 	local targets = find_possible_targets(bufpath)
 	if #targets == 1 then
 		M.selected_target_by_bufnr[bufnr] = targets[1]
