@@ -108,7 +108,10 @@ function M.attach_or_spawn(bufnr)
 			capabilities = capabilities,
 			cmd = { unpack(M.server_config.default_cmd), unpack(args) },
 			on_init = function()
-				vim.notify("Omnisharp client initialized with target " .. target, vim.log.levels.INFO)
+				vim.notify(
+					"Omnisharp client initialized with target " .. vim.fn.fnamemodify(target, ":~:."),
+					vim.log.levels.INFO
+				)
 			end,
 			on_attach = function(client, bufnr)
 				client.server_capabilities.semanticTokensProvider = {
@@ -193,14 +196,17 @@ function M.attach_or_spawn(bufnr)
 			end,
 		})
 		if client_id == nil then
-			vim.notify("Failed to start omnisharp client for " .. target, vim.log.levels.ERROR)
+			vim.notify(
+				"Failed to start omnisharp client for " .. vim.fn.fnamemodify(target, ":~:."),
+				vim.log.levels.ERROR
+			)
 			return
 		end
 		M.client_by_target[target] = client_id
 	end
 
 	if vim.lsp.buf_attach_client(bufnr, client_id) == false then
-		vim.notify("Failed to attach omnisharp client for " .. target, vim.log.levels.ERROR)
+		vim.notify("Failed to attach omnisharp client for " .. vim.fn.fnamemodify(target, ":~:."), vim.log.levels.ERROR)
 	end
 end
 
