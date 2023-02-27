@@ -129,7 +129,11 @@ return {
 				end,
 
 				["omnisharp"] = function()
-					require("config.lsp.omnisharp").setup({ on_attach = on_attach })
+					require("config.lsp.omnisharp").setup({
+						cmd = require("mason-lspconfig.server_configurations.omnisharp")().cmd,
+						capabilities = capabilities,
+						on_attach = on_attach,
+					})
 				end,
 			})
 

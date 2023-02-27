@@ -27,7 +27,9 @@ end
 local M = {}
 
 M.server_config = {
-	default_cmd = { "omnisharp" },
+	cmd = nil,
+	capabilities = nil,
+	on_attach = nil,
 }
 M.client_by_target = {} ---@type table<string, number|nil>
 M.targets_by_bufnr = {} ---@type table<number, string[]>
@@ -94,19 +96,12 @@ function M.attach_or_spawn(bufnr)
 		"RoslynExtensionsOptions:AnalyzeOpenDocumentsOnly=true",
 	})
 
-	local capabilities = vim.lsp.protocol.make_client_capabilities()
-	local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-	if ok then
-		-- nvim-cmp supports additional completion capabilities
-		capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
-	end
-
 	local client_id = M.client_by_target[target]
 	if client_id == nil then
 		client_id = vim.lsp.start_client({
 			name = "omnisharp",
-			capabilities = capabilities,
-			cmd = { unpack(M.server_config.default_cmd), unpack(args) },
+			capabilities = M.server_config.capabilities,
+			cmd = { unpack(M.server_config.cmd), unpack(args) },
 			on_init = function()
 				vim.notify(
 					"Omnisharp client initialized with target " .. vim.fn.fnamemodify(target, ":~:."),
