@@ -123,6 +123,12 @@ return {
 	},
 
 	{
+		"luukvbaal/statuscol.nvim",
+		lazy = false,
+		config = true,
+	},
+
+	{
 		"lukas-reineke/indent-blankline.nvim",
 		event = "BufReadPre",
 		config = {

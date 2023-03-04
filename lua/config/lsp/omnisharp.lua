@@ -2,13 +2,18 @@ local util = require("lspconfig.util")
 
 ---Finds the possible Targets
 ---@param fname string @The name of the file to find possible targets for
----@return string[] @The possible targets.
+---@return string[], (string|nil) @The possible targets.
 local function find_possible_targets(fname)
+	local prefered_target = nil
 	local targets = {}
 
 	local sln_dir = util.root_pattern("*sln")(fname)
 	if sln_dir then
 		vim.list_extend(targets, vim.fn.glob(util.path.join(sln_dir, "*.sln"), true, true))
+	end
+
+	if #targets == 1 then
+		prefered_target = targets[1]
 	end
 
 	local csproj_dir = util.root_pattern("*csproj")(fname)
@@ -26,7 +31,11 @@ local function find_possible_targets(fname)
 		table.insert(targets, cwd)
 	end
 
-	return targets
+	if #targets == 1 then
+		prefered_target = targets[1]
+	end
+
+	return targets, prefered_target
 end
 
 local M = {}
@@ -56,8 +65,8 @@ function M.init_buf_targets(bufnr)
 	end
 
 	local bufpath = util.path.sanitize(bufname)
-	local targets = find_possible_targets(bufpath)
-	if #targets == 1 then
+	local targets, prefered_target = find_possible_targets(bufpath)
+	if prefered_target then
 		M.selected_target_by_bufnr[bufnr] = targets[1]
 	elseif #targets > 1 then
 		vim.api.nvim_create_user_command("OmnisharpSelectTarget", function()
@@ -189,7 +198,47 @@ function M.attach_or_spawn(bufnr)
 					full = vim.empty_dict(),
 				}
 
-				vim.schedule_wrap(M.server_config.on_attach)(client, bufnr)
+				vim.schedule_wrap(function(client, bufnr)
+					M.server_config.on_attach(client, bufnr)
+
+					local client = vim.lsp.get_client_by_id(client.id)
+
+					vim.api.nvim_create_user_command("CSRunTest1", function()
+						client.rpc.raw_request({
+							command = "/v2/runtest",
+							arguments = { ["methodName"] = "Test1" },
+						}, function(err, result)
+							vim.notify(vim.inspect(result), vim.log.levels.INFO)
+							if err then
+								vim.notify(err.message, vim.log.levels.ERROR)
+								return
+							end
+							if result.passed then
+								vim.notify("Test passed", vim.log.levels.INFO)
+							else
+								vim.notify("Test failed", vim.log.levels.ERROR)
+							end
+						end)
+					end, { desc = "Runs the test at the current cursor position" })
+
+					vim.api.nvim_create_user_command("CSRunTest2", function()
+						client.rpc.raw_request({
+							command = "/v2/runtest",
+							arguments = { ["methodName"] = "TestTest.Tests.Test1" },
+						}, function(err, result)
+							vim.notify(vim.inspect(result), vim.log.levels.INFO)
+							if err then
+								vim.notify(err.message, vim.log.levels.ERROR)
+								return
+							end
+							if result.passed then
+								vim.notify("Test passed", vim.log.levels.INFO)
+							else
+								vim.notify("Test failed", vim.log.levels.ERROR)
+							end
+						end)
+					end, { desc = "Runs the test at the current cursor position" })
+				end)(client, bufnr)
 			end,
 			on_exit = function()
 				M.client_by_target[target] = nil
