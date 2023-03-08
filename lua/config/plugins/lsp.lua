@@ -66,6 +66,7 @@ return {
 			"neovim/nvim-lspconfig",
 			-- plugins to setup lsp servers
 			"folke/neodev.nvim",
+            "Hoffs/omnisharp-extended-lsp.nvim",
 
 			-- better ui for lsp progress
 			{ "j-hui/fidget.nvim", config = true },
@@ -129,7 +130,7 @@ return {
 				end,
 
 				["omnisharp"] = function()
-					require("config.lsp.omnisharp").setup({
+					require("omnisharper").setup({
 						cmd = require("mason-lspconfig.server_configurations.omnisharp")().cmd,
 						capabilities = capabilities,
 						on_attach = on_attach,
