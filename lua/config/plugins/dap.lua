@@ -33,13 +33,6 @@ return {
 				-- TODO: we need vsda for this one, apparently it is some closed source visual studio stuff
 				-- command = "/Users/jmederos/.vscode/extensions/ms-dotnettools.csharp-1.25.2-darwin-arm64/.debugger/arm64/vsdbg-ui",
 				id = "coreclr",
-				enrich_config = function(config, run_adapter)
-					if config.request == "launch" then
-						run_adapter(vim.tbl_deep_extend("force", config, {
-							cwd = vim.fn.getcwd(),
-						}))
-					end
-				end,
 			}
 			dap.adapters.coreclr = dap.adapters.netcoredbg
 
@@ -67,8 +60,8 @@ return {
 			local dapui = require("lazy-require").require_on_exported_call("dapui")
 
 			dap.listeners.after.event_initialized["dapui_config"] = dapui.open
-			dap.listeners.after.event_terminated["dapui_config"] = dapui.close
-			dap.listeners.after.event_exited["dapui_config"] = dapui.close
+			-- dap.listeners.after.event_terminated["dapui_config"] = dapui.close
+			-- dap.listeners.after.event_exited["dapui_config"] = dapui.close
 		end,
 	},
 

@@ -50,6 +50,16 @@ local on_attach = function(client, bufnr)
 
 		map("<leader>fm", vim.lsp.buf.format, "Format buffer")
 	end
+
+	-- CodeLens
+	local libpl_codelens = require("lazy-require").require_on_exported_call("libpl.codelens")
+	map("<leader>cl", libpl_codelens.run, "Run [C]ode[L]ens")
+	vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+		buffer = bufnr,
+		callback = function(opts)
+			libpl_codelens.refresh(opts.buf)
+		end,
+	})
 end
 
 return {
@@ -66,7 +76,7 @@ return {
 			"neovim/nvim-lspconfig",
 			-- plugins to setup lsp servers
 			"folke/neodev.nvim",
-            "Hoffs/omnisharp-extended-lsp.nvim",
+			"Hoffs/omnisharp-extended-lsp.nvim",
 
 			-- better ui for lsp progress
 			{ "j-hui/fidget.nvim", config = true },

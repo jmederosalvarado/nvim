@@ -1,3 +1,9 @@
+local CODELENS_REQUEST = "textDocument/codeLens"
+local CODELENS_RESOLVE = "codeLens/resolve"
+
+local RUN_TEST_COMMAND = "omnisharper/client/runTest"
+local DEBUG_TEST_COMMAND = "omnisharper/client/debugTest"
+
 local function walk_code_elements(elements, action, recursion_predicate)
 	for _, element in ipairs(elements) do
 		action(element)
@@ -12,143 +18,141 @@ local function walk_code_elements(elements, action, recursion_predicate)
 	end
 end
 
-local function get_test_codelenses(request)
-	local request_result = nil
+local function request_test_codelens(omnisharp_request, params, callback, notify)
+	local filename = vim.uri_to_fname(params.textDocument.uri)
 
-	request("o#/v2/codestructure", {
-		["fileName"] = vim.api.nvim_buf_get_name(0),
-		-- ["fileName"] = vim.lsp.util.make_text_document_params().uri,
+	local success = omnisharp_request("o#/v2/codestructure", {
+		["fileName"] = filename,
 	}, function(err, res)
-		request_result = { err = err, res = res }
+		if err then
+			return callback(err, res)
+		end
+
+		local test_codelenses = {}
+
+		walk_code_elements(res.Elements, function(element)
+			if element.Kind ~= "method" then
+				return
+			end
+
+			local test_method_name = vim.tbl_get(element, "Properties", "testMethodName")
+			local test_framework_name = vim.tbl_get(element, "Properties", "testFramework")
+			if not test_method_name or not test_framework_name then
+				return
+			end
+
+			local start_line = vim.tbl_get(element, "Ranges", "name", "Start", "Line")
+			local start_column = vim.tbl_get(element, "Ranges", "name", "Start", "Column")
+			if not start_line or not start_column then
+				return
+			end
+
+			local end_line = vim.tbl_get(element, "Ranges", "name", "End", "Line")
+			local end_column = vim.tbl_get(element, "Ranges", "name", "End", "Column")
+			if not end_line or not end_column then
+				return
+			end
+
+			local function create_test_codelens(type)
+				return {
+					range = {
+						["end"] = {
+							character = end_column,
+							line = end_line,
+						},
+						start = {
+							character = start_column,
+							line = start_line,
+						},
+					},
+					data = {
+						type = type,
+						filename = filename,
+						test_method_name = test_method_name,
+						test_framework_name = test_framework_name,
+					},
+				}
+			end
+
+			vim.list_extend(test_codelenses, {
+				create_test_codelens("RunTest"),
+				create_test_codelens("DebugTest"),
+			})
+		end)
+
+		return callback(nil, test_codelenses)
 	end)
 
-	local wait_result = vim.wait(1000, function()
-		return request_result ~= nil
-	end, 10)
+	return success, nil
+end
 
-	if not wait_result then
-		return {}
+local function request_resolve_codelens(omnisharp_request, params, callback, notify)
+	local codelens_data_type = vim.tbl_get(params, "data", "type")
+	if codelens_data_type ~= "RunTest" and codelens_data_type ~= "DebugTest" then
+		return omnisharp_request(CODELENS_RESOLVE, params, callback, notify)
 	end
 
-	if request_result.err then
-		vim.notify("Error getting code structure from omnisharp: " .. request_result.err.message, vim.log.levels.ERROR)
-		return {}
-	end
+	local codelens_data = params.data
 
-	local test_codelenses = {}
-
-	walk_code_elements(request_result.res.Elements, function(element)
-		if element.Kind ~= "method" then
-			return
+	local success = omnisharp_request("o#/project", {
+		["fileName"] = codelens_data.filename,
+	}, function(err, res)
+		if err then
+			return callback(err, res)
 		end
 
-		local framework = vim.tbl_get(element, "Properties", "testFramework")
-		local method_name = vim.tbl_get(element, "Properties", "testMethodName")
-		if not framework or not method_name then
-			return
+		local title, command
+		if codelens_data.type == "RunTest" then
+			title = "Run"
+			command = RUN_TEST_COMMAND
+		elseif codelens_data.type == "DebugTest" then
+			title = "Debug"
+			command = DEBUG_TEST_COMMAND
 		end
 
-		local start_line = vim.tbl_get(element, "Ranges", "name", "Start", "Line")
-		local start_column = vim.tbl_get(element, "Ranges", "name", "Start", "Column")
-		if not start_line or not start_column then
-			return
-		end
-
-		local end_line = vim.tbl_get(element, "Ranges", "name", "End", "Line")
-		local end_column = vim.tbl_get(element, "Ranges", "name", "End", "Column")
-		if not end_line or not end_column then
-			return
-		end
-
-		local function create_test_codelens(type)
-			return {
-				range = {
-					["end"] = {
-						character = end_column,
-						line = end_line,
-					},
-					start = {
-						character = start_column,
-						line = start_line,
-					},
-				},
-				data = {
-					type = type,
-					framework = framework,
-					method_name = method_name,
-				},
-			}
-		end
-
-		vim.list_extend(test_codelenses, {
-			create_test_codelens("RunTest"),
-			create_test_codelens("DebugTest"),
+		return callback(nil, {
+			range = vim.tbl_deep_extend("error", {}, params.range),
+			command = {
+				title = title,
+				command = command,
+				arguments = vim.tbl_deep_extend("error", codelens_data, {
+					target_framework_version = vim.tbl_get(res or {}, "MsBuildProject", "TargetFramework"),
+				}),
+			},
 		})
 	end)
 
-	return test_codelenses
+	return success, nil
 end
 
 ---@param cmd string
 ---@param cmd_args string[]
-local function wrap_omnisharp(cmd, cmd_args)
+local function omnisharper_builder(cmd, cmd_args)
 	return function(dispatch)
-		local omnisharp = vim.lsp.rpc.start(cmd, cmd_args, dispatch)
+		local omnisharper = vim.lsp.rpc.start(cmd, cmd_args, dispatch)
 
-		if not omnisharp then
+		if not omnisharper then
 			return
 		end
 
-		local request = omnisharp.request
+		omnisharper.direct_request = omnisharper.request
+
+		local omnisharper_request_table = {
+			[CODELENS_REQUEST] = request_test_codelens,
+			[CODELENS_RESOLVE] = request_resolve_codelens,
+		}
 
 		---@diagnostic disable-next-line: duplicate-set-field
-		function omnisharp.request(method, params, callback, notify)
-			if method == "textDocument/codeLens" then
-				local prev_callback = callback
-
-				callback = function(err, res)
-					if not err then
-						vim.list_extend(res, get_test_codelenses(request))
-					end
-
-					return prev_callback(err, res)
-				end
-
-				return request(method, params, callback, notify)
-			elseif method == "codeLens/resolve" then
-				local codelens_data_type = vim.tbl_get(params, "data", "type")
-				if codelens_data_type ~= "RunTest" and codelens_data_type ~= "DebugTest" then
-					return request(method, params, callback, notify)
-				end
-
-				local codelens_data_framework = vim.tbl_get(params, "data", "framework")
-				local codelens_data_method_name = vim.tbl_get(params, "data", "method_name")
-				if not codelens_data_framework or not codelens_data_method_name then
-					callback({
-						code = -1,
-						message = "Error resolving test codelens: missing framework or method name",
-					}, nil)
-					return true, nil
-				end
-
-				callback(nil, {
-					range = vim.tbl_deep_extend("error", {}, params.range),
-					command = {
-						title = codelens_data_type,
-						command = "omnisharper.test.run",
-						arguments = {
-							codelens_data_framework,
-							codelens_data_method_name,
-						},
-					},
-				})
-				return true, nil
+		function omnisharper.request(method, params, callback, notify)
+			local request = omnisharper_request_table[method]
+			if request then
+				return request(omnisharper.direct_request, params, callback, notify)
 			end
 
-			return request(method, params, callback, notify)
+			return omnisharper.direct_request(method, params, callback, notify)
 		end
 
-		return omnisharp
+		return omnisharper
 	end
 end
 
@@ -180,9 +184,113 @@ function M.spawn(cmd, target, on_attach, capabilities)
 	return vim.lsp.start_client({
 		name = "omnisharp",
 		capabilities = capabilities,
-		cmd = wrap_omnisharp(cmd[1], args),
+		cmd = omnisharper_builder(cmd[1], args),
 		handlers = {
 			["textDocument/definition"] = require("omnisharp_extended").handler,
+		},
+		commands = {
+			["omnisharp/client/findReferences"] = function(cmd, ctx)
+				vim.notify("Finding references with: " .. vim.inspect(cmd.arguments))
+			end,
+			[RUN_TEST_COMMAND] = function(cmd, ctx)
+				vim.notify("Running test with: " .. vim.inspect(cmd.arguments))
+
+				local omnisharper = vim.lsp.get_client_by_id(ctx.client_id)
+
+				omnisharper.rpc.direct_request("o#/v2/getteststartinfo", {
+					["fileName"] = cmd.arguments.filename,
+					["MethodName"] = cmd.arguments.test_method_name,
+					["TestFrameworkName"] = cmd.arguments.test_framework_name,
+					["TargetFrameworkVersion"] = cmd.arguments.target_framework_version,
+				}, function(err, res)
+					if err then
+						vim.notify("Error: " .. vim.inspect(err), vim.log.levels.ERROR)
+						return
+					end
+					vim.notify("Test result: " .. vim.inspect(res), vim.log.levels.INFO)
+				end)
+			end,
+			[DEBUG_TEST_COMMAND] = function(cmd, ctx)
+				vim.notify("Debugging test with: " .. vim.inspect(cmd.arguments))
+
+				local omnisharper = vim.lsp.get_client_by_id(ctx.client_id)
+
+				omnisharper.rpc.direct_request("o#/v2/debugtest/getstartinfo", {
+					["fileName"] = cmd.arguments.filename,
+					["MethodName"] = cmd.arguments.test_method_name,
+					["TestFrameworkName"] = cmd.arguments.test_framework_name,
+					["TargetFrameworkVersion"] = cmd.arguments.target_framework_version,
+				}, function(err, res)
+					if err then
+						vim.notify("Err: " .. vim.inspect(err), vim.log.levels.ERROR)
+						return
+					end
+
+					local program = res.FileName
+					local args = vim.tbl_map(
+						function(arg)
+							local res = string.gsub(arg, '"', "")
+							return res
+						end,
+						vim.tbl_filter(function(arg)
+							return arg ~= ""
+						end, vim.split(res.Arguments, " "))
+					)
+
+					vim.notify("Res: " .. vim.inspect({ program, unpack(args) }), vim.log.levels.INFO)
+
+					-- require("dap").run({
+					-- 	name = "Debug Test",
+					-- 	type = "coreclr",
+					-- 	request = "launch",
+					-- 	program = args[1],
+					-- 	args = { unpack(args, 2) },
+					-- 	justMyCode = false,
+					-- })
+
+					local jobid = vim.fn.jobstart({ program, unpack(args) }, {
+						stderr_buffered = true,
+						stdout_buffered = true,
+						on_stdout = function(_, data)
+							vim.notify("Test output: " .. vim.inspect(data))
+						end,
+						on_stderr = function(_, data)
+							vim.notify("Test error: " .. vim.inspect(data))
+						end,
+						on_exit = function(_, code, _)
+							vim.notify("Test exited with code: " .. code, vim.log.levels.INFO)
+							omnisharper.rpc.direct_request("o#/v2/debugtest/stop", vim.empty_dict(), function(err, res)
+								if err then
+									vim.notify("Stop Err: " .. vim.inspect(err), vim.log.levels.ERROR)
+								else
+									vim.notify("Stop Res: " .. vim.inspect(err), vim.log.levels.INFO)
+								end
+							end)
+						end,
+					})
+
+					local pid = vim.fn.jobpid(jobid)
+
+					require("dap").run({
+						name = "Debug Test",
+						type = "coreclr",
+						request = "attach",
+						processId = pid,
+						cwd = vim.fn.getcwd(),
+					})
+
+					omnisharper.rpc.direct_request("o#/v2/debugtest/launch", {
+						["fileName"] = cmd.arguments.filename,
+						["TargetProcessId"] = pid,
+					}, function(err, res)
+						if err then
+							vim.notify("Launch Err: " .. vim.inspect(err), vim.log.levels.ERROR)
+						else
+							vim.notify("Launch Res: " .. vim.inspect(res), vim.log.levels.INFO)
+						end
+					end)
+				end)
+			end,
 		},
 		on_init = function()
 			vim.notify(
@@ -266,16 +374,7 @@ function M.spawn(cmd, target, on_attach, capabilities)
 				full = vim.empty_dict(),
 			}
 
-			vim.schedule_wrap(function(client, bufnr)
-				on_attach(client, bufnr)
-
-				vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-					buffer = bufnr,
-					callback = function()
-						vim.lsp.codelens.refresh()
-					end,
-				})
-			end)(client, bufnr)
+			vim.schedule_wrap(on_attach)(client, bufnr)
 		end,
 		on_exit = function()
 			M.client_by_target[target] = nil
