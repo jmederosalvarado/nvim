@@ -20,7 +20,6 @@ end
 
 vim.opt.runtimepath:prepend(lazypath)
 
-
 require("lazy").setup("config.plugins", {
 	root = lazyroot,
 	defaults = {
@@ -30,12 +29,12 @@ require("lazy").setup("config.plugins", {
 	dev = {
 		path = "~/src/plugins.nvim",
 	},
-      install = {
-        -- install missing plugins on startup. This doesn't increase startup time.
-        missing = true,
-        -- try to load one of these colorschemes when starting an installation during startup
-        colorscheme = { "catppuccin", "habamax" },
-      },
+	install = {
+		-- install missing plugins on startup. This doesn't increase startup time.
+		missing = true,
+		-- try to load one of these colorschemes when starting an installation during startup
+		colorscheme = { "catppuccin", "habamax" },
+	},
 	performance = {
 		rtp = {
 			disabled_plugins = {

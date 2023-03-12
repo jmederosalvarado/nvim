@@ -1,13 +1,13 @@
-local M = {
+local spec = {
 	"nvim-telescope/telescope.nvim",
-    cmd = "Telescope",
+	cmd = "Telescope",
 	dependencies = {
 		-- extensions
 		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	},
 }
 
-M.init = function()
+spec.init = function()
 	local telescope_builtin = require("lazy-require").require_on_exported_call("telescope.builtin")
 
 	vim.keymap.set("n", "<leader>f", telescope_builtin.builtin, { desc = "[F]ind builtin functionality" })
@@ -38,7 +38,7 @@ M.init = function()
 	end, { desc = "Search help tags" })
 end
 
-M.config = function()
+spec.config = function()
 	local telescope = require("telescope")
 
 	telescope.setup({
@@ -51,4 +51,4 @@ M.config = function()
 	telescope.load_extension("fzf")
 end
 
-return M
+return spec

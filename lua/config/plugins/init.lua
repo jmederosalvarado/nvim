@@ -40,8 +40,7 @@ return {
 
 	{
 		"karb94/neoscroll.nvim",
-		enabled = true,
-		event = "BufReadPost",
+		event = "VeryLazy",
 		config = true,
 	},
 
@@ -65,10 +64,11 @@ return {
 		end,
 	},
 	{
-		"pwntester/octo.nvim",
-		cmd = "Octo",
+		"sindrets/diffview.nvim",
+		cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
 		config = true,
 	},
+	{ "pwntester/octo.nvim", cmd = "Octo", config = true },
 	{ "tpope/vim-repeat", event = "VeryLazy" },
 	{ "tpope/vim-unimpaired", event = "VeryLazy" },
 	{ "tpope/vim-abolish", event = "VeryLazy" },

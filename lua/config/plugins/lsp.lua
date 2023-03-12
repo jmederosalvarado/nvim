@@ -51,23 +51,20 @@ local on_attach = function(client, bufnr)
 		map("<leader>fm", vim.lsp.buf.format, "Format buffer")
 	end
 
-	-- CodeLens
-	local libpl_codelens = require("lazy-require").require_on_exported_call("libpl.codelens")
-	map("<leader>cl", libpl_codelens.run, "Run [C]ode[L]ens")
-	vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-		buffer = bufnr,
-		callback = function(opts)
-			libpl_codelens.refresh(opts.buf)
-		end,
-	})
+	-- -- CodeLens
+	-- local libpl_codelens = require("lazy-require").require_on_exported_call("libpl.codelens")
+	-- map("<leader>cl", libpl_codelens.run, "Run [C]ode[L]ens")
+	-- vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+	-- 	buffer = bufnr,
+	-- 	callback = function(opts)
+	-- 		libpl_codelens.refresh(opts.buf)
+	-- 	end,
+	-- })
 end
 
 return {
 
-	{
-		"williamboman/mason.nvim",
-		config = true,
-	},
+	{ "williamboman/mason.nvim", config = true },
 
 	{
 		"williamboman/mason-lspconfig.nvim",
@@ -120,7 +117,10 @@ return {
 						capabilities = capabilities,
 						settings = {
 							["rust-analyzer"] = {
-								["checkOnSave.command"] = "clippy",
+								checkOnSave = {
+									command = "clippy",
+									allTargets = false,
+								},
 							},
 						},
 					})

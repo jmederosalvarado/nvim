@@ -1,12 +1,14 @@
-local M = { "nvim-tree/nvim-tree.lua" }
+local spec = {
+	"nvim-tree/nvim-tree.lua",
+}
 
-M.init = function()
+spec.init = function()
 	vim.keymap.set("n", "<C-n>", function()
 		require("nvim-tree").toggle()
 	end, { desc = "Toggles [N]vim Tree", silent = true })
 end
 
-M.config = {
+spec.config = {
 	view = {
 		adaptive_size = true,
 	},
@@ -72,4 +74,4 @@ M.config = {
 	},
 }
 
-return M
+return spec
