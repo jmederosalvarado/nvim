@@ -1,12 +1,10 @@
 local spec = {
 	"nvim-tree/nvim-tree.lua",
+	command = "NvimTreeToggle",
+	keys = {
+		{ "<C-n>", "<Cmd>NvimTreeToggle<CR>", mode = "n", desc = "Toggles [N]vim Tree", silent = true },
+	},
 }
-
-spec.init = function()
-	vim.keymap.set("n", "<C-n>", function()
-		require("nvim-tree").toggle()
-	end, { desc = "Toggles [N]vim Tree", silent = true })
-end
 
 spec.config = {
 	view = {

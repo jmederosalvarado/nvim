@@ -176,12 +176,15 @@ return {
 		config = true,
 	},
 
-	-- {
-	-- 	"jmederosalvarado/gruvy.nvim",
-	-- 	config = function()
-	-- 		vim.cmd("colorscheme gruvy")
-	-- 	end,
-	-- },
+	{
+		"jmederosalvarado/gruvy.nvim",
+		enabled = false,
+		priority = 100,
+		lazy = false,
+		config = function()
+			vim.cmd("colorscheme gruvy")
+		end,
+	},
 
 	{
 		"catppuccin/nvim",

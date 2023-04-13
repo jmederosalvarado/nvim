@@ -19,6 +19,7 @@ return {
 			end, { desc = "DAP: Set log point" })
 			vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "DAP: Continue" })
 			vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "DAP: Step into" })
+			vim.keymap.set("n", "<leader>do", dap.step_out, { desc = "DAP: Step out" })
 
 			vim.keymap.set("n", "<leader>dn", dap.step_over, { desc = "DAP: Step over" })
 			vim.keymap.set("n", "<leader>dt", dap.run_to_cursor, { desc = "DAP: Run to cursor" })
@@ -54,6 +55,24 @@ return {
 						return selected
 					end,
 					stopAtEntry = true,
+				},
+				{
+					type = "netcoredbg",
+					name = "attach - netcoredbg",
+					request = "attach",
+					processId = function()
+						local selected
+						vim.ui.select(vim.fn.systemlist("ps -A -o pid,command | grep dotnet | grep -v grep"), {
+							prompt = "Select a process to attach to",
+							format_item = function(item)
+								return vim.fn.trim(item)
+							end,
+						}, function(choice)
+							selected = choice
+						end)
+						-- split the string by spaces and get the first element
+						return vim.fn.split(selected, " ")[1]
+					end,
 				},
 			}
 

@@ -159,26 +159,21 @@ return {
 		},
 		event = "BufReadPre",
 		config = function()
-			require("mason-null-ls").setup()
-			require("mason-null-ls").setup_handlers({
-				function(source_name, methods)
-					-- all sources with no handler get passed here
-
-					-- keep the original functionality of `automatic_setup = true`
-					require("mason-null-ls.automatic_setup")(source_name, methods)
-				end,
-				["isort"] = function()
-					local nls = require("null-ls")
-					nls.register(nls.builtins.formatting.isort.with({
-						args = { "--stdout", "--profile", "black", "-" },
-					}))
-				end,
-				["shfmt"] = function()
-					local nls = require("null-ls")
-					nls.register(nls.builtins.formatting.shfmt.with({
-						filetypes = vim.fn.extend(nls.builtins.formatting.shfmt.filetypes, { "zsh", "bash" }),
-					}))
-				end,
+			require("mason-null-ls").setup({
+				handlers = {
+					["isort"] = function()
+						local nls = require("null-ls")
+						nls.register(nls.builtins.formatting.isort.with({
+							args = { "--stdout", "--profile", "black", "-" },
+						}))
+					end,
+					["shfmt"] = function()
+						local nls = require("null-ls")
+						nls.register(nls.builtins.formatting.shfmt.with({
+							filetypes = vim.fn.extend(nls.builtins.formatting.shfmt.filetypes, { "zsh", "bash" }),
+						}))
+					end,
+				},
 			})
 			require("null-ls").setup({
 				on_attach = on_attach,
