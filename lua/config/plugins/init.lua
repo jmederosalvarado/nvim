@@ -177,6 +177,15 @@ return {
 	},
 
 	{
+		"akinsho/toggleterm.nvim",
+		version = "*",
+		event = "VeryLazy",
+		opts = {
+			open_mapping = "<C-;>",
+		},
+	},
+
+	{
 		"jmederosalvarado/gruvy.nvim",
 		enabled = false,
 		priority = 100,

@@ -146,6 +146,17 @@ return {
 						on_attach = on_attach,
 					})
 				end,
+
+				["zls"] = function()
+					require("lspconfig").zls.setup({
+						on_attach = on_attach,
+						capabilities = capabilities,
+						settings = {
+							-- use_comptime_interpreter = true,
+							warn_style = true,
+						},
+					})
+				end,
 			})
 
 			-- vim.lsp.set_log_level("DEBUG")
