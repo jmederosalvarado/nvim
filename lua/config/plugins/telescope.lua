@@ -38,17 +38,15 @@ spec.init = function()
 	end, { desc = "Search help tags" })
 end
 
-spec.config = function()
-	local telescope = require("telescope")
-
-	telescope.setup({
-		defaults = {
-			prompt_prefix = "   ",
-			selection_caret = "❯ ",
-		},
-	})
-
-	telescope.load_extension("fzf")
-end
+spec.opts = {
+	defaults = {
+		prompt_prefix = "? ",
+		selection_caret = "❯ ",
+	},
+	pickers = {},
+	extensions = {
+		fzf = {},
+	},
+}
 
 return spec

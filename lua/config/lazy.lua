@@ -35,6 +35,22 @@ require("lazy").setup("config.plugins", {
 		-- try to load one of these colorschemes when starting an installation during startup
 		colorscheme = { "catppuccin", "habamax" },
 	},
+	ui = {
+		icons = {
+			cmd = "⌘",
+			config = "⚙",
+			event = " ",
+			ft = " ",
+			init = "⚙",
+			keys = " ",
+			plugin = " ",
+			runtime = "◷",
+			source = " ",
+			start = " ",
+			task = " ",
+			lazy = "⏾",
+		},
+	},
 	performance = {
 		rtp = {
 			disabled_plugins = {

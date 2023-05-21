@@ -51,6 +51,8 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- APPEARANCE {{{
 
+local icons = require("config.icons")
+
 local function diagnostic_sign_define(name, _)
 	local hl = "DiagnosticSign" .. name
 	local numhl = "DiagnosticNum" .. name
@@ -65,7 +67,7 @@ diagnostic_sign_define("Hint", "")
 vim.diagnostic.config({
 	virtual_text = {
 		spacing = 4,
-		prefix = "",
+		prefix = icons.circle_filled,
 		source = "if_many",
 		severity = {
 			min = vim.diagnostic.severity.INFO,

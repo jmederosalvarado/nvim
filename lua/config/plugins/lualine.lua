@@ -58,12 +58,19 @@ return {
 			"branch",
 		}
 
+		local diagnostics_circle = require("config.icons").circle_filled
+
 		local diagnostics = {
 			"diagnostics",
 			sources = { "nvim_diagnostic" },
 			update_in_insert = true,
 			sections = { "error", "warn", "info" },
-			symbols = { error = " ", warn = " ", info = " " },
+			symbols = {
+				error = diagnostics_circle .. " ",
+				warn = diagnostics_circle .. " ",
+				info = diagnostics_circle .. " ",
+			},
+			-- symbols = { error = " ", warn = " ", info = " " },
 			-- symbols = { error = " ", warn = " ", info = " " },
 			-- symbols = { error = " ", warn = " ", info = " " },
 			-- diagnostics_color = {
@@ -93,10 +100,10 @@ return {
 			options = {
 				icons_enabled = true,
 				theme = "auto",
-				section_separators = { left = "", right = "" },
-				component_separators = { left = "", right = "" },
-				-- section_separators = { left = "", right = "" },
-				-- component_separators = { left = "", right = "" },
+				-- section_separators = { left = "", right = "" },
+				-- component_separators = { left = "", right = "" },
+				section_separators = { left = "", right = "" },
+				component_separators = { left = "|", right = "|" },
 				disabled_filetypes = {
 					statusline = {},
 					winbar = { "NvimTree" },
@@ -115,7 +122,7 @@ return {
 				lualine_b = { filename },
 				lualine_c = { diagnostics },
 				lualine_x = {},
-				lualine_y = { diff, branch },
+				lualine_y = { branch },
 				lualine_z = { location },
 			},
 			inactive_sections = {

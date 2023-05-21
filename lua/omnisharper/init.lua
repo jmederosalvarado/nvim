@@ -47,7 +47,6 @@ M.server_config = {
 }
 M.client_by_target = {} ---@type table<string, number|nil>
 M.targets_by_bufnr = {} ---@type table<number, string[]>
-M.selected_target_by_bufnr = {} ---@type table<number, string|nil>
 
 function M.init_buf_targets(bufnr)
 	bufnr = bufnr or vim.api.nvim_get_current_buf()
@@ -67,7 +66,7 @@ function M.init_buf_targets(bufnr)
 	local bufpath = util.path.sanitize(bufname)
 	local targets, prefered_target = find_possible_targets(bufpath)
 	if prefered_target then
-		M.selected_target_by_bufnr[bufnr] = targets[1]
+		vim.g["OmnisharperSelectedTarget" .. bufnr] = prefered_target
 	elseif #targets > 1 then
 		vim.api.nvim_create_user_command("OmnisharpSelectTarget", function()
 			M.select_target(vim.api.nvim_get_current_buf())
@@ -80,17 +79,24 @@ function M.init_buf_targets(bufnr)
 			end
 		end
 		if #active_possible_targets == 1 then
-			M.selected_target_by_bufnr[bufnr] = active_possible_targets[1]
+			vim.g["OmnisharperSelectedTarget" .. bufnr] = active_possible_targets[1]
 		end
 	end
 	M.targets_by_bufnr[bufnr] = targets
+
+	if vim.g["OmnisharperSelectedTarget" .. bufnr] == nil and #targets > 0 then
+		M.select_target(vim.api.nvim_get_current_buf())
+	end
 end
 
 function M.attach_or_spawn(bufnr)
 	bufnr = bufnr or vim.api.nvim_get_current_buf()
 
-	local target = M.selected_target_by_bufnr[bufnr]
+	local target = vim.g["OmnisharperSelectedTarget" .. bufnr]
 	if target == nil then
+		return
+	elseif not util.path.is_file(target) then
+		vim.g["OmnisharperSelectedTarget" .. bufnr] = nil
 		return
 	end
 
@@ -121,7 +127,7 @@ function M.select_target(bufnr)
 	vim.ui.select(M.targets_by_bufnr[bufnr], {
 		prompt = "Select target",
 	}, function(selected)
-		M.selected_target_by_bufnr[bufnr] = selected
+		vim.g["OmnisharperSelectedTarget" .. bufnr] = selected
 		M.attach_or_spawn(bufnr)
 	end)
 end

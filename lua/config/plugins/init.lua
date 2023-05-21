@@ -4,7 +4,16 @@ return {
 	"nvim-lua/plenary.nvim",
 	{
 		"nvim-tree/nvim-web-devicons",
-		config = { default = true },
+		config = function()
+			local icons = require("config.icons")
+			local devicons = require("nvim-web-devicons")
+
+			devicons.setup({ default = true })
+			devicons.set_default_icon(icons.circle_empty)
+			for _, icon in pairs(devicons.get_icons()) do
+				icon.icon = icons.circle_empty
+			end
+		end,
 	},
 
 	{
@@ -13,7 +22,7 @@ return {
 		config = {
 			panel = {
 				enabled = true,
-				auto_refresh = false,
+				auto_refresh = true,
 				keymap = {
 					jump_prev = "[[",
 					jump_next = "]]",
@@ -35,6 +44,11 @@ return {
 					dismiss = "<C-]>",
 				},
 			},
+			filetypes = {
+				["*"] = false,
+			},
+			copilot_node_command = "node", -- Node.js version must be > 16.x
+			server_opts_overrides = {},
 		},
 	},
 
@@ -83,20 +97,15 @@ return {
 	},
 
 	{
-		"folke/persistence.nvim",
+		"olimorris/persisted.nvim",
+		lazy = false,
+		opts = {
+			use_git_branch = true,
+			autosave = true,
+			autoload = true,
+		},
 		init = function()
-			vim.api.nvim_create_autocmd("VimEnter", {
-				callback = function()
-					if vim.fn.argc() == 0 then
-						require("persistence").load()
-					end
-				end,
-				desc = "Load persisted session for the current directory",
-				nested = true,
-			})
-			-- vim.keymap.set("n", "<leader>pp", function()
-			-- 	require("persistence").load()
-			-- end, { desc = "Load [P]ersisted session for the current directory" })
+			vim.o.sessionoptions = "buffers,terminal,help,curdir,folds,globals,tabpages,winpos,winsize"
 		end,
 		config = true,
 	},
@@ -198,6 +207,7 @@ return {
 	{
 		"catppuccin/nvim",
 		name = "catppuccin",
+		enabled = true,
 		priority = 100,
 		lazy = false,
 		config = function()

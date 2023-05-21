@@ -2,9 +2,20 @@ return {
 	"lewis6991/gitsigns.nvim",
 	event = "BufReadPre",
 	config = {
-		preview_config = {
-			border = "solid",
+		signs = {
+			add = { text = "🮍" },
+			change = { text = "🮍" },
+			-- delete = { text = "🮏" },
+			delete = { text = "🮞" },
+			-- topdelete = { text = "🮎" },
+			topdelete = { text = "🮟" },
+			changedelete = { text = "🮍" },
+			-- untracked = { text = "┆" },
 		},
+		preview_config = {
+			border = "none",
+		},
+		attach_to_untracked = false,
 		current_line_blame = true,
 		on_attach = function(bufnr)
 			local gs = require("gitsigns")
@@ -37,7 +48,7 @@ return {
 			map({ "n", "v" }, "<leader>hs", gs.stage_hunk, "[S]tage Hunk")
 			map({ "n", "v" }, "<leader>hr", gs.reset_hunk, "[R]eset Hunk")
 			map("n", "<leader>hu", gs.undo_stage_hunk, "[U]ndo Stage Hunk")
-			map("n", "<leader>hp", gs.preview_hunk, "[P]review Hunk")
+			map("n", "<leader>hp", gs.preview_hunk_inline, "[P]review Hunk")
 
 			map("n", "<leader>hS", gs.stage_buffer, "[S]tage Buffer")
 			map("n", "<leader>hR", gs.reset_buffer, "[R]eset Buffer")
