@@ -156,6 +156,108 @@ local function omnisharper_builder(cmd, cmd_args)
 	end
 end
 
+-- commands = {
+-- 	[RUN_TEST_COMMAND] = function(cmd, ctx)
+-- 		vim.notify("Running test with: " .. vim.inspect(cmd.arguments))
+--
+-- 		local omnisharper = vim.lsp.get_client_by_id(ctx.client_id)
+--
+-- 		omnisharper.rpc.direct_request("o#/v2/getteststartinfo", {
+-- 			["fileName"] = cmd.arguments.filename,
+-- 			["MethodName"] = cmd.arguments.test_method_name,
+-- 			["TestFrameworkName"] = cmd.arguments.test_framework_name,
+-- 			["TargetFrameworkVersion"] = cmd.arguments.target_framework_version,
+-- 		}, function(err, res)
+-- 			if err then
+-- 				vim.notify("Error: " .. vim.inspect(err), vim.log.levels.ERROR)
+-- 				return
+-- 			end
+-- 			vim.notify("Test result: " .. vim.inspect(res), vim.log.levels.INFO)
+-- 		end)
+-- 	end,
+-- 	[DEBUG_TEST_COMMAND] = function(cmd, ctx)
+-- 		vim.notify("Debugging test with: " .. vim.inspect(cmd.arguments))
+--
+-- 		local omnisharper = vim.lsp.get_client_by_id(ctx.client_id)
+--
+-- 		omnisharper.rpc.direct_request("o#/v2/debugtest/getstartinfo", {
+-- 			["fileName"] = cmd.arguments.filename,
+-- 			["MethodName"] = cmd.arguments.test_method_name,
+-- 			["TestFrameworkName"] = cmd.arguments.test_framework_name,
+-- 			["TargetFrameworkVersion"] = cmd.arguments.target_framework_version,
+-- 		}, function(err, res)
+-- 			if err then
+-- 				vim.notify("Err: " .. vim.inspect(err), vim.log.levels.ERROR)
+-- 				return
+-- 			end
+--
+-- 			local program = res.FileName
+-- 			local args = vim.tbl_map(
+-- 				function(arg)
+-- 					local res = string.gsub(arg, '"', "")
+-- 					return res
+-- 				end,
+-- 				vim.tbl_filter(function(arg)
+-- 					return arg ~= ""
+-- 				end, vim.split(res.Arguments, " "))
+-- 			)
+--
+-- 			vim.notify("Res: " .. vim.inspect({ program, unpack(args) }), vim.log.levels.INFO)
+--
+-- 			-- require("dap").run({
+-- 			-- 	name = "Debug Test",
+-- 			-- 	type = "coreclr",
+-- 			-- 	request = "launch",
+-- 			-- 	program = args[1],
+-- 			-- 	args = { unpack(args, 2) },
+-- 			-- 	justMyCode = false,
+-- 			-- })
+--
+-- 			local jobid = vim.fn.jobstart({ program, unpack(args) }, {
+-- 				stderr_buffered = true,
+-- 				stdout_buffered = true,
+-- 				on_stdout = function(_, data)
+-- 					vim.notify("Test output: " .. vim.inspect(data))
+-- 				end,
+-- 				on_stderr = function(_, data)
+-- 					vim.notify("Test error: " .. vim.inspect(data))
+-- 				end,
+-- 				on_exit = function(_, code, _)
+-- 					vim.notify("Test exited with code: " .. code, vim.log.levels.INFO)
+-- 					omnisharper.rpc.direct_request("o#/v2/debugtest/stop", vim.empty_dict(), function(err, res)
+-- 						if err then
+-- 							vim.notify("Stop Err: " .. vim.inspect(err), vim.log.levels.ERROR)
+-- 						else
+-- 							vim.notify("Stop Res: " .. vim.inspect(err), vim.log.levels.INFO)
+-- 						end
+-- 					end)
+-- 				end,
+-- 			})
+--
+-- 			local pid = vim.fn.jobpid(jobid)
+--
+-- 			require("dap").run({
+-- 				name = "Debug Test",
+-- 				type = "coreclr",
+-- 				request = "attach",
+-- 				processId = pid,
+-- 				cwd = vim.fn.getcwd(),
+-- 			})
+--
+-- 			omnisharper.rpc.direct_request("o#/v2/debugtest/launch", {
+-- 				["fileName"] = cmd.arguments.filename,
+-- 				["TargetProcessId"] = pid,
+-- 			}, function(err, res)
+-- 				if err then
+-- 					vim.notify("Launch Err: " .. vim.inspect(err), vim.log.levels.ERROR)
+-- 				else
+-- 					vim.notify("Launch Res: " .. vim.inspect(res), vim.log.levels.INFO)
+-- 				end
+-- 			end)
+-- 		end)
+-- 	end,
+-- },
+
 local M = {}
 
 ---Creates a new OmniSharper lsp server
@@ -187,110 +289,6 @@ function M.spawn(cmd, target, on_attach, capabilities)
 		cmd = omnisharper_builder(cmd[1], args),
 		handlers = {
 			["textDocument/definition"] = require("omnisharp_extended").handler,
-		},
-		commands = {
-			["omnisharp/client/findReferences"] = function(cmd, ctx)
-				vim.notify("Finding references with: " .. vim.inspect(cmd.arguments))
-			end,
-			[RUN_TEST_COMMAND] = function(cmd, ctx)
-				vim.notify("Running test with: " .. vim.inspect(cmd.arguments))
-
-				local omnisharper = vim.lsp.get_client_by_id(ctx.client_id)
-
-				omnisharper.rpc.direct_request("o#/v2/getteststartinfo", {
-					["fileName"] = cmd.arguments.filename,
-					["MethodName"] = cmd.arguments.test_method_name,
-					["TestFrameworkName"] = cmd.arguments.test_framework_name,
-					["TargetFrameworkVersion"] = cmd.arguments.target_framework_version,
-				}, function(err, res)
-					if err then
-						vim.notify("Error: " .. vim.inspect(err), vim.log.levels.ERROR)
-						return
-					end
-					vim.notify("Test result: " .. vim.inspect(res), vim.log.levels.INFO)
-				end)
-			end,
-			[DEBUG_TEST_COMMAND] = function(cmd, ctx)
-				vim.notify("Debugging test with: " .. vim.inspect(cmd.arguments))
-
-				local omnisharper = vim.lsp.get_client_by_id(ctx.client_id)
-
-				omnisharper.rpc.direct_request("o#/v2/debugtest/getstartinfo", {
-					["fileName"] = cmd.arguments.filename,
-					["MethodName"] = cmd.arguments.test_method_name,
-					["TestFrameworkName"] = cmd.arguments.test_framework_name,
-					["TargetFrameworkVersion"] = cmd.arguments.target_framework_version,
-				}, function(err, res)
-					if err then
-						vim.notify("Err: " .. vim.inspect(err), vim.log.levels.ERROR)
-						return
-					end
-
-					local program = res.FileName
-					local args = vim.tbl_map(
-						function(arg)
-							local res = string.gsub(arg, '"', "")
-							return res
-						end,
-						vim.tbl_filter(function(arg)
-							return arg ~= ""
-						end, vim.split(res.Arguments, " "))
-					)
-
-					vim.notify("Res: " .. vim.inspect({ program, unpack(args) }), vim.log.levels.INFO)
-
-					-- require("dap").run({
-					-- 	name = "Debug Test",
-					-- 	type = "coreclr",
-					-- 	request = "launch",
-					-- 	program = args[1],
-					-- 	args = { unpack(args, 2) },
-					-- 	justMyCode = false,
-					-- })
-
-					local jobid = vim.fn.jobstart({ program, unpack(args) }, {
-						stderr_buffered = true,
-						stdout_buffered = true,
-						on_stdout = function(_, data)
-							vim.notify("Test output: " .. vim.inspect(data))
-						end,
-						on_stderr = function(_, data)
-							vim.notify("Test error: " .. vim.inspect(data))
-						end,
-						on_exit = function(_, code, _)
-							vim.notify("Test exited with code: " .. code, vim.log.levels.INFO)
-							omnisharper.rpc.direct_request("o#/v2/debugtest/stop", vim.empty_dict(), function(err, res)
-								if err then
-									vim.notify("Stop Err: " .. vim.inspect(err), vim.log.levels.ERROR)
-								else
-									vim.notify("Stop Res: " .. vim.inspect(err), vim.log.levels.INFO)
-								end
-							end)
-						end,
-					})
-
-					local pid = vim.fn.jobpid(jobid)
-
-					require("dap").run({
-						name = "Debug Test",
-						type = "coreclr",
-						request = "attach",
-						processId = pid,
-						cwd = vim.fn.getcwd(),
-					})
-
-					omnisharper.rpc.direct_request("o#/v2/debugtest/launch", {
-						["fileName"] = cmd.arguments.filename,
-						["TargetProcessId"] = pid,
-					}, function(err, res)
-						if err then
-							vim.notify("Launch Err: " .. vim.inspect(err), vim.log.levels.ERROR)
-						else
-							vim.notify("Launch Res: " .. vim.inspect(res), vim.log.levels.INFO)
-						end
-					end)
-				end)
-			end,
 		},
 		on_init = function()
 			vim.notify(
@@ -373,6 +371,8 @@ function M.spawn(cmd, target, on_attach, capabilities)
 				range = true,
 				full = vim.empty_dict(),
 			}
+
+			client.server_capabilities.semanticTokensProvider = nil
 
 			vim.schedule_wrap(on_attach)(client, bufnr)
 		end,
