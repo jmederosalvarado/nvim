@@ -9,7 +9,7 @@ local on_attach = function(client, bufnr)
 	end
 
 	map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-	map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+	map("<C-.>", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
 	map("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
 	map("gD", vim.lsp.buf.type_definition, "Type [D]efinition")
@@ -145,6 +145,37 @@ return {
 						capabilities = capabilities,
 						on_attach = on_attach,
 					})
+
+					-- require("lspconfig").omnisharp.setup({
+					-- 	capabilities = capabilities,
+					-- 	on_attach = on_attach,
+					-- 	handlers = {
+					-- 		["textDocument/definition"] = require("omnisharp_extended").handler,
+					-- 	},
+					--
+					-- 	enable_import_completion = false,
+					-- })
+					--
+					-- vim.api.nvim_create_autocmd("LspAttach", {
+					-- 	callback = function(ev)
+					-- 		local client = vim.lsp.get_client_by_id(ev.data.client_id)
+					-- 		local function toSnakeCase(str)
+					-- 			return string.gsub(str, "%s*[- ]%s*", "_")
+					-- 		end
+					--
+					-- 		if client.name == "omnisharp" then
+					-- 			local tokenModifiers =
+					-- 				client.server_capabilities.semanticTokensProvider.legend.tokenModifiers
+					-- 			for i, v in ipairs(tokenModifiers) do
+					-- 				tokenModifiers[i] = toSnakeCase(v)
+					-- 			end
+					-- 			local tokenTypes = client.server_capabilities.semanticTokensProvider.legend.tokenTypes
+					-- 			for i, v in ipairs(tokenTypes) do
+					-- 				tokenTypes[i] = toSnakeCase(v)
+					-- 			end
+					-- 		end
+					-- 	end,
+					-- })
 				end,
 
 				["zls"] = function()

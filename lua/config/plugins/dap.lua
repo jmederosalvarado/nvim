@@ -17,6 +17,8 @@ return {
 					dap.set_breakpoint(log_message)
 				end
 			end, { desc = "DAP: Set log point" })
+			-- vim.keymap.set("n", "<leader>da", require("dap").attach(), { desc = "DAP: Continue" })
+
 			vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "DAP: Continue" })
 			vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "DAP: Step into" })
 			vim.keymap.set("n", "<leader>do", dap.step_out, { desc = "DAP: Step out" })
@@ -62,7 +64,7 @@ return {
 					request = "attach",
 					processId = function()
 						local selected
-						vim.ui.select(vim.fn.systemlist("ps -A -o pid,command | grep dotnet | grep -v grep"), {
+						vim.ui.select(vim.fn.systemlist("ps -A -o pid,command | grep 'dotnet exec' | grep -v grep"), {
 							prompt = "Select a process to attach to",
 							format_item = function(item)
 								return vim.fn.trim(item)
