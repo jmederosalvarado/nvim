@@ -1,3 +1,4 @@
+---@type LazySpec[]
 return {
 	"tjdevries/lazy-require.nvim",
 
@@ -125,6 +126,7 @@ return {
 
 	{
 		"ggandor/leap.nvim",
+		enabled = false,
 		keys = {
 			{ "gs", mode = { "n", "x", "o" } },
 			{ "s", mode = { "n", "x", "o" } },
@@ -139,6 +141,7 @@ return {
 
 	{
 		"ggandor/flit.nvim",
+		enabled = false,
 		keys = {
 			{ "f", mode = { "n", "x", "o" } },
 			{ "F", mode = { "n", "x", "o" } },

@@ -76,7 +76,7 @@ return {
 			"Hoffs/omnisharp-extended-lsp.nvim",
 
 			-- better ui for lsp progress
-			{ "j-hui/fidget.nvim", config = true },
+			{ "j-hui/fidget.nvim", tag = "legacy", config = true },
 		},
 		config = function()
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
