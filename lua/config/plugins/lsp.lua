@@ -9,7 +9,7 @@ local on_attach = function(client, bufnr)
 	end
 
 	map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-	map("<C-.>", vim.lsp.buf.code_action, "[C]ode [A]ction")
+	map("<leader>cc", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
 	map("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
 	map("gD", vim.lsp.buf.type_definition, "Type [D]efinition")
@@ -191,35 +191,6 @@ return {
 			})
 
 			-- vim.lsp.set_log_level("DEBUG")
-		end,
-	},
-
-	{
-		"jay-babu/mason-null-ls.nvim",
-		dependencies = {
-			"jose-elias-alvarez/null-ls.nvim",
-		},
-		event = "BufReadPre",
-		config = function()
-			require("mason-null-ls").setup({
-				handlers = {
-					["isort"] = function()
-						local nls = require("null-ls")
-						nls.register(nls.builtins.formatting.isort.with({
-							args = { "--stdout", "--profile", "black", "-" },
-						}))
-					end,
-					["shfmt"] = function()
-						local nls = require("null-ls")
-						nls.register(nls.builtins.formatting.shfmt.with({
-							filetypes = vim.fn.extend(nls.builtins.formatting.shfmt.filetypes, { "zsh", "bash" }),
-						}))
-					end,
-				},
-			})
-			require("null-ls").setup({
-				on_attach = on_attach,
-			})
 		end,
 	},
 }

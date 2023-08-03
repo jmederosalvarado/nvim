@@ -125,34 +125,6 @@ return {
 	},
 
 	{
-		"ggandor/leap.nvim",
-		enabled = false,
-		keys = {
-			{ "gs", mode = { "n", "x", "o" } },
-			{ "s", mode = { "n", "x", "o" } },
-			{ "S", mode = { "n", "x", "o" } },
-			{ "x", mode = { "x", "o" } },
-			{ "X", mode = { "x", "o" } },
-		},
-		config = function()
-			require("leap").set_default_keymaps()
-		end,
-	},
-
-	{
-		"ggandor/flit.nvim",
-		enabled = false,
-		keys = {
-			{ "f", mode = { "n", "x", "o" } },
-			{ "F", mode = { "n", "x", "o" } },
-			{ "t", mode = { "n", "x", "o" } },
-			{ "T", mode = { "n", "x", "o" } },
-		},
-		dependencies = { "ggandor/leap.nvim" },
-		config = true,
-	},
-
-	{
 		"akinsho/toggleterm.nvim",
 		version = "*",
 		event = "VeryLazy",
