@@ -44,7 +44,10 @@ return {
 				treesitter_context = true,
 				cmp = true,
 				gitsigns = true,
-				telescope = true,
+				telescope = {
+                    enabled = true,
+                    -- style = "nvchad"
+                },
 				nvimtree = true,
 				markdown = true,
 				notify = true,
@@ -101,7 +104,11 @@ return {
 					crust = "#151819",
 				},
 			},
-			highlight_overrides = {},
+            custom_highlights = function(colors)
+                return {
+                    TreesitterContextBottom = { style = {} }
+                }
+            end,
 		})
 		vim.cmd.colorscheme("catppuccin")
 	end,
