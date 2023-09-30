@@ -105,13 +105,13 @@ return {
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		event = "BufReadPre",
-		config = {
-			char = "┊", -- ▏┊
-			context_char = "┊", -- ▏┊
-			show_current_context = true,
-			show_trailing_blankline_indent = false,
-			use_treesitter = true,
-			max_indent_increase = 1,
+		main = "ibl",
+		config = true,
+		opts = {
+			indent = {
+				char = "▏", -- ▏┊
+				tab_char = "▎",
+			},
 		},
 	},
 
@@ -128,6 +128,7 @@ return {
 		"akinsho/toggleterm.nvim",
 		version = "*",
 		event = "VeryLazy",
+		keys = { "<C-;>" },
 		opts = {
 			open_mapping = "<C-;>",
 		},

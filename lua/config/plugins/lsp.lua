@@ -73,7 +73,7 @@ return {
 			"neovim/nvim-lspconfig",
 			-- plugins to setup lsp servers
 			"folke/neodev.nvim",
-			"Hoffs/omnisharp-extended-lsp.nvim",
+			"jmederosalvarado/roslyn.nvim",
 
 			-- better ui for lsp progress
 			{ "j-hui/fidget.nvim", tag = "legacy", config = true },
@@ -85,6 +85,11 @@ return {
 				-- nvim-cmp supports additional completion capabilities
 				capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
 			end
+
+			require("roslyn").setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+			})
 
 			require("mason-lspconfig").setup()
 			require("mason-lspconfig").setup_handlers({
@@ -140,11 +145,11 @@ return {
 				end,
 
 				["omnisharp"] = function()
-					require("omnisharper").setup({
-						cmd = require("mason-lspconfig.server_configurations.omnisharp")().cmd,
-						capabilities = capabilities,
-						on_attach = on_attach,
-					})
+					-- require("omnisharper").setup({
+					-- 	cmd = require("mason-lspconfig.server_configurations.omnisharp")().cmd,
+					-- 	capabilities = capabilities,
+					-- 	on_attach = on_attach,
+					-- })
 
 					-- require("lspconfig").omnisharp.setup({
 					-- 	capabilities = capabilities,

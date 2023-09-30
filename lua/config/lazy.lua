@@ -27,7 +27,8 @@ require("lazy").setup("config.plugins", {
 	},
 	lockfile = vim.fn.stdpath("config") .. "/lazy-lock.json",
 	dev = {
-		path = "~/src/plugins.nvim",
+		path = "~/src",
+		patterns = { "jmederosalvarado" },
 	},
 	install = {
 		-- install missing plugins on startup. This doesn't increase startup time.
