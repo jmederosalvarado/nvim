@@ -79,12 +79,12 @@ return {
 			{ "j-hui/fidget.nvim", tag = "legacy", config = true },
 		},
 		config = function()
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-			if ok then
-				-- nvim-cmp supports additional completion capabilities
-				capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
-			end
+			local cmp_nvim_lsp = require("cmp_nvim_lsp")
+			local capabilities = vim.tbl_deep_extend(
+				"force",
+				vim.lsp.protocol.make_client_capabilities(),
+				cmp_nvim_lsp.default_capabilities()
+			)
 
 			require("roslyn").setup({
 				on_attach = on_attach,
