@@ -1,7 +1,9 @@
+---@type LazySpec
 return {
 	"zbirenbaum/copilot.lua",
-	event = "VeryLazy",
-	config = {
+	event = "InsertEnter",
+    enabled = false,
+	opts = {
 		panel = {
 			enabled = true,
 			auto_refresh = true,

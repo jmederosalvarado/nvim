@@ -2,15 +2,18 @@ return {
 	"hrsh7th/nvim-cmp",
 	event = "InsertEnter",
 	dependencies = {
+		-- appearance
+		"onsails/lspkind.nvim",
+
 		-- autocomplete pairs
 		"windwp/nvim-autopairs",
 
 		-- snippets
 		"rafamadriz/friendly-snippets",
 		"L3MON4D3/LuaSnip",
+		"saadparwaiz1/cmp_luasnip",
 
 		-- cmp sources
-		"saadparwaiz1/cmp_luasnip",
 		"hrsh7th/cmp-nvim-lua",
 		"hrsh7th/cmp-nvim-lsp",
 		"petertriho/cmp-git",
@@ -23,34 +26,6 @@ return {
 		local types = require("cmp.types")
 		local luasnip = require("luasnip")
 
-		local icons = {
-			Text = " ",
-			Method = " ",
-			Function = " ",
-			Constructor = " ",
-			Field = "ﰠ",
-			Variable = " ",
-			Class = "ﴯ",
-			Interface = " ",
-			Module = " ",
-			Property = "ﰠ",
-			Unit = "塞",
-			Value = " ",
-			Enum = " ",
-			Keyword = " ",
-			Snippet = " ",
-			Color = " ",
-			File = " ",
-			Reference = " ",
-			Folder = " ",
-			EnumMember = " ",
-			Constant = " ",
-			Struct = "פּ",
-			Event = " ",
-			Operator = " ",
-			TypeParameter = "",
-		}
-
 		cmp.setup({
 			snippet = {
 				expand = function(args)
@@ -58,19 +33,26 @@ return {
 				end,
 			},
 			formatting = {
-				format = function(entry, vim_item)
-					-- vim_item.kind = string.format("%s %s", icons[vim_item.kind], vim_item.kind)
+                fields = {
+                    "abbr",
+                    "kind",
+                    "menu",
+                },
+                expandable_indicator = true,
+				format = require("lspkind").cmp_format({
+                    mode = "symbol_text",
+					before = function(entry, vim_item)
+						vim_item.menu = ({
+							nvim_lsp = "[LSP]",
+							luasnip = "[SNIP]",
+							nvim_lua = "[LUA]",
+							buffer = "[BUF]",
+							path = "[PATH]",
+						})[entry.source.name]
 
-					vim_item.menu = ({
-						nvim_lsp = "[LSP]",
-						luasnip = "[SNIP]",
-						nvim_lua = "[LUA]",
-						buffer = "[BUF]",
-						path = "[PATH]",
-					})[entry.source.name]
-
-					return vim_item
-				end,
+						return vim_item
+					end,
+				}),
 			},
 			mapping = {
 				["<C-Space>"] = cmp.mapping(cmp.mapping.complete({}), { "i", "s" }),
@@ -111,7 +93,6 @@ return {
 				{ name = "nvim_lsp_signature_help" },
 				{ name = "luasnip" },
 				{ name = "buffer", max_item_count = 5 },
-				-- { name = "nvim_lua" }, -- use lua lsp instead
 				{ name = "path" },
 			},
 			experimental = {

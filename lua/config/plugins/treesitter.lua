@@ -11,7 +11,6 @@ return {
 				incremental_selection = { enable = false },
 				indent = { enable = true, disable = { "python", "yaml" } },
 				autopairs = { enable = true },
-				autotag = { enable = true },
 				matchup = { enable = true },
 			})
 		end,

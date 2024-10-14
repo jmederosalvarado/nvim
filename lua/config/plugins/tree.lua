@@ -28,22 +28,21 @@ spec.config = function()
 				git_placement = "after", -- before or after
 				show = {
 					file = true,
-					folder = true,
-					folder_arrow = false,
+					folder = false,
+					folder_arrow = true,
 					git = false,
 				},
 				glyphs = {
-
-					default = icons.circle_empty,
-					symlink = icons.circle_empty,
-					folder = {
-						default = icons.circle_empty,
-						open = icons.circle_filled,
-						empty = icons.circle_empty,
-						empty_open = icons.circle_filled,
-						symlink = icons.circle_empty,
-						symlink_open = icons.circle_filled,
-					},
+					-- default = icons.circle_empty,
+					-- symlink = icons.circle_empty,
+					-- folder = {
+					-- 	default = icons.circle_empty,
+					-- 	open = icons.circle_filled,
+					-- 	empty = icons.circle_empty,
+					-- 	empty_open = icons.circle_filled,
+					-- 	symlink = icons.circle_empty,
+					-- 	symlink_open = icons.circle_filled,
+					-- },
 					git = {
 						ignored = "",
 						unstaged = "!",

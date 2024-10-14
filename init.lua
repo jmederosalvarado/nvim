@@ -1,6 +1,10 @@
+---@type "catppuccin"
+vim.g.colorscheme = "catppuccin"
+
 require("config.opts")
 require("config.maps")
-require("config.misc")
+require("config.autocmds")
+require("config.appearance")
 require("config.lazy")
 
 _G.iprint = function(...)
