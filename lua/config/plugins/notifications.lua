@@ -19,4 +19,4 @@ local notify = {
 	end,
 }
 
-return notify
+return {}

@@ -6,7 +6,7 @@ return {
 		"onsails/lspkind.nvim",
 
 		-- autocomplete pairs
-		"windwp/nvim-autopairs",
+		{ "windwp/nvim-autopairs", opts = { check_ts = true } },
 
 		-- snippets
 		"rafamadriz/friendly-snippets",
@@ -33,14 +33,14 @@ return {
 				end,
 			},
 			formatting = {
-                fields = {
-                    "abbr",
-                    "kind",
-                    "menu",
-                },
-                expandable_indicator = true,
+				fields = {
+					"abbr",
+					"kind",
+					"menu",
+				},
+				expandable_indicator = true,
 				format = require("lspkind").cmp_format({
-                    mode = "symbol_text",
+					mode = "symbol_text",
 					before = function(entry, vim_item)
 						vim_item.menu = ({
 							nvim_lsp = "[LSP]",

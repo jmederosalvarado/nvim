@@ -7,10 +7,11 @@ return {
 		end,
 		config = function()
 			require("nvim-treesitter.configs").setup({
+				auto_install = false,
+
 				highlight = { enable = true },
 				incremental_selection = { enable = false },
 				indent = { enable = true, disable = { "python", "yaml" } },
-				autopairs = { enable = true },
 				matchup = { enable = true },
 			})
 		end,

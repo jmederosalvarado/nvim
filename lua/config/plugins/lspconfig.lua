@@ -1,14 +1,6 @@
 ---@type LazySpec
 return {
-	{
-		"williamboman/mason.nvim",
-		cmd = "Mason",
-		opts = {
-			registries = {
-				"file:/Users/jmederos/src/mason-registry/add-roslyn-lsp",
-			},
-		},
-	},
+	{ "williamboman/mason.nvim", cmd = "Mason", config = true },
 
 	{
 		"williamboman/mason-lspconfig.nvim",
@@ -24,11 +16,17 @@ return {
 				cmp_nvim_lsp.default_capabilities()
 			)
 
+			require("lspconfig").zls.setup({
+				capabilities = capabilities,
+			})
+
 			require("mason-lspconfig").setup()
 			require("mason-lspconfig").setup_handlers({
 				-- The first entry (without a key) will be the default handler
 				function(server_name) -- default handler (optional)
-					vim.notify(string.format("Server '%s' is not setup properly", server_name), vim.log.levels.WARN)
+					require("lspconfig")[server_name].setup({
+						capabilities = capabilities,
+					})
 				end,
 
 				["lua_ls"] = function()
@@ -36,9 +34,17 @@ return {
 						capabilities = capabilities,
 						settings = {
 							Lua = {
-								format = { enable = false },
-								telemetry = { enable = false },
-								workspace = { checkThirdParty = false },
+								runtime = {
+									version = "LuaJIT",
+									special = { reload = "require" },
+								},
+								workspace = {
+									library = {
+										vim.fn.expand("$VIMRUNTIME/lua"),
+										vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
+										vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua/lazy",
+									},
+								},
 							},
 						},
 					})
