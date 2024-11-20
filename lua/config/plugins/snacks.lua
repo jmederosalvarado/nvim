@@ -5,9 +5,17 @@ return {
 	---@type snacks.Config
 	opts = {
 		bigfile = { enabled = true },
-		notifier = { enabled = true },
 		quickfile = { enabled = true },
+		notifier = { enabled = true },
 		statuscolumn = { enabled = true },
 		words = { enabled = true },
 	},
+    keys = {
+        -- {
+        --     "<C-;>",
+        --     function ()
+        --         require("snacks").terminal.toggle()
+        --     end
+        -- }
+    }
 }

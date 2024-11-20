@@ -1,4 +1,4 @@
-return {
+local specs = {
 	"akinsho/toggleterm.nvim",
 	version = "*",
 	event = "VeryLazy",
@@ -7,3 +7,5 @@ return {
 		open_mapping = "<C-;>",
 	},
 }
+
+return specs
