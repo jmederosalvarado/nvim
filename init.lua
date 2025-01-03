@@ -1,6 +1,5 @@
----@type "catppuccin"
-vim.g.colorscheme = "catppuccin"
-
+-- vim.cmd.colorscheme("habamax")
+--
 require("config.opts")
 require("config.maps")
 require("config.autocmds")

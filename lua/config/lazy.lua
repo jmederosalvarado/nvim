@@ -29,7 +29,7 @@ end
 
 vim.opt.runtimepath:prepend(lazypath)
 
-require("lazy").setup("config.plugins", {
+require("lazy").setup("plugins", {
 	root = lazyroot,
 	defaults = {
 		lazy = true,
@@ -48,6 +48,10 @@ require("lazy").setup("config.plugins", {
 	checker = {
 		enable = true,
 		check_pinned = true,
+	},
+	change_detection = {
+		enabled = false,
+        notify = false
 	},
 
 	performance = {

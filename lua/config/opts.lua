@@ -26,7 +26,7 @@ vim.o.sidescrolloff = 4
 
 -- colors
 vim.o.termguicolors = true
-vim.o.bg = "dark"
+-- vim.o.bg = "dark"
 
 -- show some invisible characters (e.g. tabs, spaces)
 vim.o.list = true

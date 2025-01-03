@@ -8,7 +8,13 @@ local spec = {
 	},
 }
 
-local telescope_builtin = require("lazy-require").require_on_exported_call("telescope.builtin")
+local telescope_builtin = setmetatable({}, {
+	__index = function(_, k)
+		return function(...)
+			return require("telescope.builtin")[k](...)
+		end
+	end,
+})
 
 spec.keys = {
 	{ "<leader>f", telescope_builtin.builtin, desc = "[F]ind builtin functionality" },
@@ -47,6 +53,9 @@ spec.init = function()
 	vim.api.nvim_create_user_command("Help", function(_)
 		telescope_builtin.help_tags()
 	end, { desc = "Search help tags" })
+
+	vim.lsp.buf.references = telescope_builtin.lsp_references
+	vim.lsp.buf.implementation = telescope_builtin.lsp_implementation
 end
 
 spec.opts = {
