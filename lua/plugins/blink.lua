@@ -1,13 +1,13 @@
 ---@type LazySpec
 return {
 	"Saghen/blink.cmp",
-    enabled = true,
+	enabled = true,
 	lazy = false, -- lazy loading handled internally
 	-- optional: provides snippets for the snippet source
 	dependencies = "rafamadriz/friendly-snippets",
 
 	-- use a release tag to download pre-built binaries
-	version = "v0.*",
+	version = "*",
 
 	---@module 'blink.cmp'
 	---@type blink.cmp.Config
@@ -15,41 +15,37 @@ return {
 		-- 'default' for mappings similar to built-in completion
 		-- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
 		-- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
-		-- see the "default configuration" section below for full documentation on how to define
-		-- your own keymap.
-		keymap = "default",
+		-- See the full "keymap" documentation for information on defining your own keymap.
+		keymap = { preset = "default" },
 
-		highlight = {
-			-- sets the fallback highlight groups to nvim-cmp's highlight groups
-			-- useful for when your theme doesn't support blink.cmp
-			-- will be removed in a future release, assuming themes add support
+		appearance = {
+			-- Sets the fallback highlight groups to nvim-cmp's highlight groups
+			-- Useful for when your theme doesn't support blink.cmp
+			-- Will be removed in a future release
 			use_nvim_cmp_as_default = true,
+			-- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+			-- Adjusts spacing to ensure icons are aligned
+			nerd_font_variant = "mono",
 		},
-		-- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-		-- adjusts spacing to ensure icons are aligned
-		nerd_font_variant = "mono",
 
 		-- default list of enabled providers defined so that you can extend it
 		-- elsewhere in your config, without redefining it, via `opts_extend`
 		sources = {
-			completion = {
-				enabled_providers = { "lsp", "path", "snippets", "buffer", "lazydev" },
-			},
+			default = function()
+				if vim.bo.filetype == "lua" then
+					return { "lazydev", "lsp", "path", "snippets", "buffer" }
+				end
+
+				return { "lsp", "path", "snippets", "buffer" }
+			end,
 
 			providers = {
-				-- dont show LuaLS require statements when lazydev has items
-				lsp = { name = "LSP", fallback_for = { "lazydev" } },
-				lazydev = { name = "LazyDev", module = "lazydev.integrations.blink" },
+				lazydev = {
+					name = "LazyDev",
+					module = "lazydev.integrations.blink",
+					fallbacks = { "lsp" },
+				},
 			},
 		},
-
-		-- experimental auto-brackets support
-		accept = { auto_brackets = { enabled = true } },
-
-		-- experimental signature help support
-		trigger = { signature_help = { enabled = true } },
 	},
-	-- allows extending the enabled_providers array elsewhere in your config
-	-- without having to redefine it
-	opts_extend = { "sources.completion.enabled_providers" },
 }

@@ -31,13 +31,19 @@ return {
 			"Saghen/blink.cmp",
 		},
 		config = function()
+            -- Using cmp
+            --
 			-- local capabilities = vim.tbl_deep_extend(
 			-- 	"force",
 			-- 	vim.lsp.protocol.make_client_capabilities(),
 			-- 	require("cmp_nvim_lsp").default_capabilities()
 			-- )
+
+            -- Using blink
 			local capabilities = require("blink.cmp").get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities())
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+            -- Default
+			-- local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 			require("lspconfig").zls.setup({
 				capabilities = capabilities,
