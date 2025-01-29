@@ -3,6 +3,8 @@ return {
 	"ThePrimeagen/harpoon",
 	branch = "harpoon2",
 	dependencies = { "nvim-lua/plenary.nvim" },
+    ---@module 'harpoon.config'
+    ---@type HarpoonConfig
 	opts = {},
 	keys = {
 		{

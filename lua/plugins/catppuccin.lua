@@ -2,8 +2,11 @@
 return {
 	"catppuccin/nvim",
 	name = "catppuccin",
+    enabled = false,
 	priority = 1000,
 	lazy = false,
+    ---@module 'catpuccin'
+    ---@type CatppuccinOptions
 	opts = {
 		background = {
 			light = "latte",

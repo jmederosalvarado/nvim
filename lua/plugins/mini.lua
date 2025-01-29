@@ -1,7 +1,11 @@
 local mini = {}
 
 mini["ai"] = {
-	enabled = false,
+	enabled = true,
+}
+
+mini["statusline"] = {
+	enabled = true,
 }
 
 mini["surround"] = {
@@ -17,7 +21,12 @@ mini["comment"] = {
 }
 
 mini["diff"] = {
-	enabled = false,
+	enabled = true,
+	opts = {
+		view = {
+			style = "sign",
+		},
+	},
 }
 
 mini["icons"] = {

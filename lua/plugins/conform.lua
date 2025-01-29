@@ -4,6 +4,8 @@ local spec = {
 	cmd = "ConformInfo",
 }
 
+---@module 'conform'
+---@type conform.setupOpts
 spec.opts = {
 	formatters_by_ft = {
 		lua = { "stylua" },

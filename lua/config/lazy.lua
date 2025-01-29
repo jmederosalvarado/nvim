@@ -43,7 +43,7 @@ require("lazy").setup("plugins", {
 		-- install missing plugins on startup. This doesn't increase startup time.
 		missing = true,
 		-- try to load one of these colorschemes when starting an installation during startup
-		colorscheme = { "catppuccin", "habamax" },
+		-- colorscheme = { "catppuccin", "habamax" },
 	},
 	checker = {
 		enable = true,

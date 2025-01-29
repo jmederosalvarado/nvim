@@ -2,6 +2,7 @@
 return {
 	"nvim-lualine/lualine.nvim",
 	lazy = false,
+    enabled = false,
 	config = function()
 		local lualine = require("lualine")
 
@@ -19,7 +20,7 @@ return {
 			-- 2: Shows tab_nr + tab_name
 		}
 
-		lualine.setup({
+        local opts = {
 			options = {
 				section_separators = { left = "", right = "" },
 				component_separators = { left = "|", right = "|" },
@@ -69,6 +70,8 @@ return {
 				"mason",
 				"lazy",
 			},
-		})
+		}
+
+		lualine.setup(opts)
 	end,
 }

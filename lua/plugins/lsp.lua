@@ -5,6 +5,8 @@ return {
 	{
 		"folke/lazydev.nvim",
 		ft = "lua", -- only load on lua files
+		---@module 'lazydev'
+		---@type lazydev.Config
 		opts = {
 			library = {
 				"lazy.nvim",
@@ -19,6 +21,8 @@ return {
 	{
 		"seblj/roslyn.nvim",
 		ft = "cs",
+        ---@module 'roslyn'
+        ---@type RoslynNvimConfig
 		opts = {},
 	},
 
@@ -27,26 +31,25 @@ return {
 		event = "BufReadPre",
 		dependencies = {
 			"neovim/nvim-lspconfig",
-			-- "hrsh7th/cmp-nvim-lsp",
 			"Saghen/blink.cmp",
 		},
 		config = function()
-            -- Using cmp
-            --
+			-- Using cmp
+			--
 			-- local capabilities = vim.tbl_deep_extend(
 			-- 	"force",
 			-- 	vim.lsp.protocol.make_client_capabilities(),
 			-- 	require("cmp_nvim_lsp").default_capabilities()
 			-- )
 
-            -- Using blink
-			local capabilities = require("blink.cmp").get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities())
+			-- Using blink
+			-- local capabilities = require("blink.cmp").get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-            -- Default
+			-- Default
 			-- local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 			require("lspconfig").zls.setup({
-				capabilities = capabilities,
+				-- capabilities = capabilities,
 			})
 
 			require("mason-lspconfig").setup()
@@ -54,13 +57,13 @@ return {
 				-- The first entry (without a key) will be the default handler
 				function(server_name) -- default handler (optional)
 					require("lspconfig")[server_name].setup({
-						capabilities = capabilities,
+						-- capabilities = capabilities,
 					})
 				end,
 
 				["rust_analyzer"] = function()
 					require("lspconfig").rust_analyzer.setup({
-						capabilities = capabilities,
+						-- capabilities = capabilities,
 						settings = {
 							["rust-analyzer"] = {
 								checkOnSave = {
@@ -74,7 +77,7 @@ return {
 
 				["gopls"] = function()
 					require("lspconfig").gopls.setup({
-						capabilities = capabilities,
+						-- capabilities = capabilities,
 						settings = {
 							gopls = {
 								staticcheck = true,
@@ -84,8 +87,6 @@ return {
 					})
 				end,
 			})
-
-			-- vim.lsp.set_log_level("DEBUG")
 		end,
 	},
 }
