@@ -1,6 +1,7 @@
 ---@type LazySpec
 return {
 	"yetone/avante.nvim",
+    enabled = false,
 	event = "VeryLazy",
 	lazy = false,
 	-- Set this to "*" to always pull the latest release version,

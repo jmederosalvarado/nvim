@@ -4,11 +4,9 @@ local lazyroot = vim.fn.stdpath("data") .. "/lazy"
 local lazypath = lazyroot .. "/lazy.nvim"
 
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
-	print("===============================")
-	print("    Bootstrapping lazy.nvim    ")
-	print("===============================")
+	print("lazy.nvim: Cloning repository")
 
-	local out = vim.fn.system({
+	local process = vim.system({
 		"git",
 		"clone",
 		"--filter=blob:none",
@@ -16,15 +14,17 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 		"https://github.com/folke/lazy.nvim.git",
 		lazypath,
 	})
-	if vim.v.shell_error ~= 0 then
-		vim.api.nvim_echo({
-			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-			{ out, "WarningMsg" },
-			{ "\nPress any key to exit..." },
-		}, true, {})
-		vim.fn.getchar()
-		os.exit(1)
+
+	-- Wait for the process to exit
+	local result = process:wait()
+
+	-- Handle unsuccessful exit
+	if result.code ~= 0 then
+		print("lazy.nvim: Failed to clone: " .. result.stderr)
+		return
 	end
+
+	print("lazy.nvim: Cloned successfully")
 end
 
 vim.opt.runtimepath:prepend(lazypath)
@@ -34,16 +34,9 @@ require("lazy").setup("plugins", {
 	defaults = {
 		lazy = true,
 	},
-	lockfile = vim.fn.stdpath("config") .. "/lazy-lock.json",
 	dev = {
 		path = "~/src",
 		patterns = { "jmederosalvarado" },
-	},
-	install = {
-		-- install missing plugins on startup. This doesn't increase startup time.
-		missing = true,
-		-- try to load one of these colorschemes when starting an installation during startup
-		-- colorscheme = { "catppuccin", "habamax" },
 	},
 	checker = {
 		enable = true,
@@ -51,7 +44,7 @@ require("lazy").setup("plugins", {
 	},
 	change_detection = {
 		enabled = false,
-        notify = false
+		notify = false,
 	},
 
 	performance = {

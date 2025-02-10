@@ -21,9 +21,16 @@ return {
 	{
 		"seblj/roslyn.nvim",
 		ft = "cs",
-        ---@module 'roslyn'
-        ---@type RoslynNvimConfig
-		opts = {},
+		---@module 'roslyn'
+		---@type RoslynNvimConfig
+		opts = {
+			choose_target = function(targets)
+				return vim.iter(targets):find(function(target)
+					return vim.fs.basename(target) == "Nethermind.sln"
+				end)
+			end,
+			lock_target = true,
+		},
 	},
 
 	{

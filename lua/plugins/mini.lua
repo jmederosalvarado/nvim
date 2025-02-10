@@ -1,36 +1,26 @@
-local mini = {}
+local mini = {
+	-- Text Editing
+	["ai"] = {},
+	["pairs"] = {},
+	["surround"] = {},
 
-mini["ai"] = {
-	enabled = true,
-}
+	-- General
 
-mini["statusline"] = {
-	enabled = true,
-}
-
-mini["surround"] = {
-	enabled = false,
-}
-
-mini["bracketed"] = {
-	enabled = true,
-}
-
-mini["comment"] = {
-	enabled = false,
-}
-
-mini["diff"] = {
-	enabled = true,
-	opts = {
-		view = {
-			style = "sign",
+	["bracketed"] = {},
+	["diff"] = {
+		opts = {
+			view = {
+				style = "sign",
+			},
 		},
 	},
-}
 
-mini["icons"] = {
-	enabled = false,
+	-- Appearance
+
+	["statusline"] = {},
+	["icons"] = {
+		enabled = false,
+	},
 }
 
 ---@type LazySpec
@@ -39,7 +29,7 @@ return {
 	lazy = false,
 	config = function()
 		for mod, plugin in pairs(mini) do
-			if not plugin.enabled then
+			if plugin.enabled == false then
 				goto continue
 			end
 

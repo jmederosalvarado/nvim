@@ -10,6 +10,7 @@ spec.opts = {
 	formatters_by_ft = {
 		lua = { "stylua" },
 		zig = { "zigfmt" },
+		markdown = { "prettierd" },
 	},
 	formatters = {
 		shfmt = {
