@@ -68,6 +68,8 @@ vim.o.undofile = true -- persist undo history between editing sessions
 vim.o.undolevels = 10000 -- undo history max size
 vim.o.updatetime = 200 -- save swap file and trigger `CursorHold`
 
+vim.o.sessionoptions = "buffers,terminal,help,curdir,folds,globals,tabpages,winpos,winsize"
+
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line
 -- vim.o.whichwrap:append "<>[]hl"

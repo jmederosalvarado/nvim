@@ -1,26 +1,33 @@
 local mini = {
 	-- Text Editing
-	["ai"] = {},
-	["pairs"] = {},
-	["surround"] = {},
+	ai = {},
+	pairs = {},
+	surround = {},
 
 	-- General
 
-	["bracketed"] = {},
-	["diff"] = {
+	bracketed = {},
+	git = {},
+	diff = {
 		opts = {
 			view = {
 				style = "sign",
 			},
 		},
 	},
+	sessions = {
+		enabled = false,
+		opts = {
+			autoread = true,
+		},
+	},
 
 	-- Appearance
 
-	["statusline"] = {},
-	["icons"] = {
-		enabled = false,
-	},
+	pick = {},
+	notify = {},
+	statusline = {},
+	icons = {},
 }
 
 ---@type LazySpec
