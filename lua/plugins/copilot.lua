@@ -2,7 +2,7 @@
 return {
 	"zbirenbaum/copilot.lua",
 	event = "InsertEnter",
-	enabled = true,
+	enabled = false,
 	cmd = "Copilot",
 	---@module 'copilot'
 	---@type copilot_config

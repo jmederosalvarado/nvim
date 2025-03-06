@@ -9,31 +9,40 @@ return {
 		-- optional: provides snippets for the snippet source
 		"rafamadriz/friendly-snippets",
 
-		-- add blink.compat
-		{
-			"saghen/blink.compat",
-			-- use the latest release, via version = '*', if you also use the latest release for blink.cmp
-			version = "*",
-			-- lazy.nvim will automatically load the plugin when it's required by blink.cmp
-			lazy = true,
-			-- make sure to set opts so that lazy.nvim calls blink.compat's setup
-			opts = {},
-		},
+		{ "xzbdmw/colorful-menu.nvim" },
 	},
 
 	---@module 'blink.cmp'
 	---@type blink.cmp.Config
 	opts = {
+		completion = {
+			-- Show documentation when selecting a completion item
+			documentation = { auto_show = true, auto_show_delay_ms = 500 },
+
+			menu = {
+				draw = {
+					-- We don't need label_description now because label and label_description are already
+					-- combined together in label by colorful-menu.nvim.
+					columns = { { "kind_icon" }, { "label", gap = 1 } },
+					components = {
+						label = {
+							text = function(ctx)
+								return require("colorful-menu").blink_components_text(ctx)
+							end,
+							highlight = function(ctx)
+								return require("colorful-menu").blink_components_highlight(ctx)
+							end,
+						},
+					},
+				},
+			},
+		},
 		-- default list of enabled providers defined so that you can extend it
 		-- elsewhere in your config, without redefining it, via `opts_extend`
 		sources = {
 			default = function()
 				if vim.bo.filetype == "lua" then
 					return { "lazydev", "lsp", "path", "snippets", "buffer" }
-				end
-
-				if vim.bo.filetype == "AvanteInput" then
-					return { "avante_commands", "avante_files", "avante_mentions" }
 				end
 
 				return { "lsp", "path", "snippets", "buffer" }
@@ -46,31 +55,13 @@ return {
 					-- make lazydev completions top priority (see `:h blink.cmp`)
 					score_offset = 100,
 				},
-				avante_commands = {
-					name = "avante_commands",
-					module = "blink.compat.source",
-					score_offset = 90, -- show at a higher priority than lsp
-					opts = {},
-				},
-				avante_files = {
-					name = "avante_files",
-					module = "blink.compat.source",
-					score_offset = 100, -- show at a higher priority than lsp
-					opts = {},
-				},
-				avante_mentions = {
-					name = "avante_mentions",
-					module = "blink.compat.source",
-					score_offset = 1000, -- show at a higher priority than lsp
-					opts = {},
-				},
 			},
-
-			-- Disable cmdline completions
-			cmdline = {},
 		},
 
 		-- Experimental signature help support
 		signature = { enabled = true },
+
+		-- Disable cmdline completion
+		cmdline = { enabled = false },
 	},
 }
