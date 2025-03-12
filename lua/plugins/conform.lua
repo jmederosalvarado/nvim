@@ -20,19 +20,11 @@ spec.opts = {
     stylua = {
       prepend_args = {
         '--column-width',
-        '120',
-        '--line-endings',
-        'Unix',
+        '100',
         '--indent-type',
         'Spaces',
         '--indent-width',
         '2',
-        '--quote-style',
-        'AutoPreferSingle',
-        '--call-parentheses',
-        'Always',
-        '--collapse-simple-statement',
-        'Always',
       },
     },
     shfmt = {

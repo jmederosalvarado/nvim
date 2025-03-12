@@ -4,41 +4,41 @@
 
 ## Defaults
 
-Cursor        <- CursorIM
+Cursor        <- CursorIM*
 
 SignColumn    <- FoldColumn         <- CursorLineFold
               <- CursorLineSign
 
-NonText       <- EndOfBuffer
-              <- Whitespace
+NonText       <- EndOfBuffer*
+              <- Whitespace*
               <- LspCodeLens        <- LspCodeLensSeparator
               <- LspInlayHint
 
-NormalFloat   <- FloatBorder*
-Title         <- FloatTitle*        <- FloatFooter
+NormalFloat   <- FloatBorder
+Title         <- FloatTitle         <- FloatFooter
               <- @markup.heading
-CurSearch     <- IncSearch
+CurSearch     <- IncSearch*
 
 LineNr        <- LineNrAbove
               <- LineNrBelow
 
-StatusLine    <- MsgSeparator
+StatusLine    <- MsgSeparator*
               <- StatusLineTerm
 
 StatusLineN   <- StatusLineTermNC
-              <- TabLine            <- TabLineFill
+              <- TabLine*            <- TabLineFill*
 
 Pmenu         <- PmenuExtra
               <- PmenuKind
-              <- PmenuSbar
+              <- PmenuSbar*
 
 PmenuSel      <- PmenuExtraSel
               <- PmenuKindSel
-              <- WildMenu*
+              <- WildMenu
 
-Search        <- Substitute*
+Search        <- Substitute
 
-Visual        <- VisualNOS*
+Visual        <- VisualNOS
               <- LspReferenceText            <- LspReferenceRead
               <-                             <- LspReferenceTarget
               <-                             <- LspReferenceWrite
@@ -46,7 +46,7 @@ Visual        <- VisualNOS*
               <- SnippetTabstop 
 
 
-Normal         <- WinSeparator*      <- VertSplit
+Normal         <- WinSeparator      <- VertSplit*
 
 ## Syntax
 
@@ -136,7 +136,7 @@ DiagnosticOk    <- DiagnosticFloatingOk*
 
 ComplMatchIns
 MsgArea
-NormalNC
+NormalNC*
 VisualNC
 
 @diff
@@ -265,130 +265,129 @@ VisualNC
 
 --]]
 
-local P = require('primer.palette')
+local P = require("primer.palette")
 
 local H = {}
 
--- stylua: ignore start
 -- Builtin highlighting groups.
-H.ColorColumn   = {fg   = nil,          bg = P.black2,       attr = nil,               sp            = nil}
-H.Conceal       = {fg   = nil,          bg = nil,            attr = nil,               sp            = nil}
-H.CurSearch     = {fg   = P.base01,     bg = P.base09,       attr = nil,               sp            = nil}
-H.Cursor        = {fg   = P.base00,     bg = P.base05,       attr = nil,               sp            = nil}
-H.CursorColumn  = {fg   = nil,          bg = P.base01,       attr = nil,               sp            = nil}
-H.CursorLine    = {fg   = nil,          bg = P.black2,       attr = nil,               sp            = nil}
-H.CursorLineNr  = {fg   = P.white,      bg = nil,            attr = nil,               sp            = nil}
-H.Directory     = {fg   = P.base0D,     bg = nil,            attr = nil,               sp            = nil}
-H.ErrorMsg      = {fg   = P.base08,     bg = P.base00,       attr = nil,               sp            = nil}
-H.Folded        = {fg   = P.light_grey, bg = P.black2,       attr = nil,               sp            = nil}
-H.LineNr        = {fg   = P.grey,       bg = nil,            attr = nil,               sp            = nil}
-H.MatchParen    = {link = 'MatchWord'}
-H.ModeMsg       = {fg   = P.base0B,     bg = nil,            attr = nil,               sp            = nil}
-H.MoreMsg       = {fg   = P.base0B,     bg = nil,            attr = nil,               sp            = nil}
-H.NonText       = {fg   = P.base03,     bg = nil,            attr = nil,               sp            = nil}
-H.Normal        = {fg   = P.base05,     bg = P.base00,       attr = nil,               sp            = nil}
-H.WinSeparator  = {fg   = P.line,       bg = nil,            attr = nil,               sp            = nil} -- Normal
-H.NormalFloat   = {fg   = nil,          bg = P.darker_black, attr = nil,               sp            = nil}
-H.FloatBorder   = {fg   = P.blue,       bg   = nil,          attr = nil,               sp            = nil} -- NormalFloat
-H.Pmenu         = {fg   = nil,          bg = P.one_bg,       attr = nil,               sp            = nil}
-H.PmenuMatch    = {fg   = P.base05,     bg     = P.base01,   attr       = 'bold',      sp = nil}
-H.PmenuMatchSel = {fg   = P.base05,     bg     = P.base01,   attr       = 'bold,       reverse', sp = nil}
-H.PmenuSel      = {fg   = P.black,      bg = P.pmenu_bg,     attr = nil,               sp            = nil}
-H.WildMenu      = {fg   = P.base08,     bg = P.base0A,       attr = nil,               sp            = nil} -- PmenuSel
-H.PmenuThumb    = {fg   = nil,          bg = P.grey,         attr = nil,               sp            = nil}
-H.Question      = {fg   = P.base0D,     bg = nil,            attr = nil,               sp            = nil}
-H.QuickFixLine  = {fg   = nil,          bg = P.base01,       attr = nil,               sp            = nil}
-H.Search        = {fg   = P.base01,     bg = P.base0A,       attr = nil,               sp            = nil}
-H.Substitute    = {fg   = P.base01,     bg = P.base0A,       attr = nil,               sp            = nil} -- Search
-H.SignColumn    = {fg   = P.base03,     bg = nil,            attr = nil,               sp            = nil}
-H.FoldColumn    = {fg   = nil,          bg = nil,            attr = nil,               sp            = nil} -- SignColumn
-H.SpecialKey    = {fg   = P.base03,     bg = nil,            attr = nil,               sp            = nil}
-H.SpellRare     = {fg   = nil,          bg     = nil,        attr       = 'undercurl', sp = P.base0E}
-H.SpellLocal    = {fg   = nil,          bg     = nil,        attr       = 'undercurl', sp = P.base0C}
-H.SpellCap      = {fg   = nil,          bg     = nil,        attr       = 'undercurl', sp = P.base0D}
-H.SpellBad      = {fg   = nil,          bg     = nil,        attr       = 'undercurl', sp = P.base08}
-H.StatusLine    = {fg   = P.base04,     bg     = P.base02,   attr       = nil,         sp = nil}
-H.StatusLineNC  = {fg   = P.base03,     bg     = P.base01,   attr       = nil,         sp = nil}
-H.TabLineSel    = {fg   = P.base0B,     bg     = P.base01,   attr       = nil,         sp = nil}
-H.TermCursor    = {fg   = nil,          bg     = nil,        attr       = 'reverse',   sp = nil}
-H.Title         = {fg   = P.base0D,     bg = nil,            attr = nil,               sp            = nil}
-H.FloatTitle    = {fg   = P.white,      bg   = P.grey,       attr   = nil,             sp            = nil} -- Title
-H.Visual        = {fg   = nil,          bg = P.base02,       attr = nil,               sp            = nil}
-H.VisualNOS     = {fg   = P.base08,     bg = nil,            attr = nil,               sp            = nil} -- Visual
-H.WarningMsg    = {fg   = P.base08,     bg = nil,            attr = nil,               sp            = nil}
-H.WinBar        = {fg   = nil,          bg = nil,            attr = nil,               sp            = nil}
-H.WinBarNC      = {fg   = nil,          bg = nil,            attr = nil,               sp            = nil}
+H.ColorColumn = { fg = nil, bg = P.black2, attr = nil, sp = nil }
+H.Conceal = { fg = nil, bg = nil, attr = nil, sp = nil }
+H.CurSearch = { fg = P.base01, bg = P.base09, attr = nil, sp = nil }
+H.Cursor = { fg = P.base00, bg = P.base05, attr = nil, sp = nil }
+H.CursorColumn = { fg = nil, bg = P.base01, attr = nil, sp = nil }
+H.CursorLine = { fg = nil, bg = P.black2, attr = nil, sp = nil }
+H.CursorLineNr = { fg = P.white, bg = nil, attr = nil, sp = nil }
+H.Directory = { fg = P.base0D, bg = nil, attr = nil, sp = nil }
+H.ErrorMsg = { fg = P.base08, bg = P.base00, attr = nil, sp = nil }
+H.Folded = { fg = P.light_grey, bg = P.black2, attr = nil, sp = nil }
+H.LineNr = { fg = P.grey, bg = nil, attr = nil, sp = nil }
+H.MatchParen = { link = "MatchWord" }
+H.ModeMsg = { fg = P.base0B, bg = nil, attr = nil, sp = nil }
+H.MoreMsg = { fg = P.base0B, bg = nil, attr = nil, sp = nil }
+H.NonText = { fg = P.base03, bg = nil, attr = nil, sp = nil }
+H.Normal = { fg = P.base05, bg = P.base00, attr = nil, sp = nil }
+H.WinSeparator = { fg = P.line, bg = nil, attr = nil, sp = nil } -- Normal
+H.NormalFloat = { fg = nil, bg = P.darker_black, attr = nil, sp = nil }
+H.FloatBorder = { fg = P.blue, bg = nil, attr = nil, sp = nil } -- NormalFloat
+H.Pmenu = { fg = nil, bg = P.one_bg, attr = nil, sp = nil }
+H.PmenuMatch = { fg = P.base05, bg = P.base01, attr = "bold", sp = nil }
+H.PmenuMatchSel = { fg = P.base05, bg = P.base01, attr = "bold,       reverse", sp = nil }
+H.PmenuSel = { fg = P.black, bg = P.pmenu_bg, attr = nil, sp = nil }
+H.WildMenu = { fg = P.base08, bg = P.base0A, attr = nil, sp = nil } -- PmenuSel
+H.PmenuThumb = { fg = nil, bg = P.grey, attr = nil, sp = nil }
+H.Question = { fg = P.base0D, bg = nil, attr = nil, sp = nil }
+H.QuickFixLine = { fg = nil, bg = P.base01, attr = nil, sp = nil }
+H.Search = { fg = P.base01, bg = P.base0A, attr = nil, sp = nil }
+H.Substitute = { fg = P.base01, bg = P.base0A, attr = nil, sp = nil } -- Search
+H.SignColumn = { fg = P.base03, bg = nil, attr = nil, sp = nil }
+H.FoldColumn = { fg = nil, bg = nil, attr = nil, sp = nil } -- SignColumn
+H.SpecialKey = { fg = P.base03, bg = nil, attr = nil, sp = nil }
+H.SpellRare = { fg = nil, bg = nil, attr = "undercurl", sp = P.base0E }
+H.SpellLocal = { fg = nil, bg = nil, attr = "undercurl", sp = P.base0C }
+H.SpellCap = { fg = nil, bg = nil, attr = "undercurl", sp = P.base0D }
+H.SpellBad = { fg = nil, bg = nil, attr = "undercurl", sp = P.base08 }
+H.StatusLine = { fg = P.base04, bg = P.base02, attr = nil, sp = nil }
+H.StatusLineNC = { fg = P.base03, bg = P.base01, attr = nil, sp = nil }
+H.TabLineSel = { fg = P.base0B, bg = P.base01, attr = nil, sp = nil }
+H.TermCursor = { fg = nil, bg = nil, attr = "reverse", sp = nil }
+H.Title = { fg = P.base0D, bg = nil, attr = nil, sp = nil }
+H.FloatTitle = { fg = P.white, bg = P.grey, attr = nil, sp = nil } -- Title
+H.Visual = { fg = nil, bg = P.base02, attr = nil, sp = nil }
+H.VisualNOS = { fg = P.base08, bg = nil, attr = nil, sp = nil } -- Visual
+H.WarningMsg = { fg = P.base08, bg = nil, attr = nil, sp = nil }
+H.WinBar = { fg = nil, bg = nil, attr = nil, sp = nil }
+H.WinBarNC = { fg = nil, bg = nil, attr = nil, sp = nil }
 
 -- Standard syntax (affects treesitter)
-H.Comment = {fg=P.base03,        bg=nil,      attr=nil, sp=nil} -- was fg=light_grey
-H.Constant = {fg=P.base09,       bg=nil,      attr=nil, sp=nil}
-H.Boolean = {fg=P.base09,        bg=nil,      attr=nil, sp=nil} -- Constant
-H.Character = {fg=P.base08,      bg=nil,      attr=nil, sp=nil} -- Constant
-H.Number = {fg=P.base09,         bg=nil,      attr=nil, sp=nil} -- Constant
-H.Float = {fg=P.base09,          bg=nil,      attr=nil, sp=nil} -- Constant
-H.Delimiter = {fg=P.base0F,      bg=nil,      attr=nil, sp=nil}
-H.Error = {fg=P.base00,          bg=P.base08, attr=nil, sp=nil}
-H.Function = {fg=P.base0D,       bg=nil,      attr=nil, sp=nil}
-H.Identifier = {fg=P.base08,     bg=nil,      attr=nil, sp=nil}
-H.Operator = {fg=P.base05,       bg=nil,      attr=nil, sp=nil}
-H.PreProc = {fg=P.base0A,        bg=nil,      attr=nil, sp=nil}
-H.Define = {fg=P.base0E,         bg=nil,      attr=nil, sp=nil} -- PreProc
-H.Include = {fg=P.base0D,        bg=nil,      attr=nil, sp=nil} -- PreProc
-H.Macro = {fg=P.base08,          bg=nil,      attr=nil, sp=nil} -- PreProc
-H.PreCondit = {fg=P.base0A,      bg=nil,      attr=nil, sp=nil} -- PreProc
-H.Special = {fg=P.base0C,        bg=nil,      attr=nil, sp=nil}
-H.Debug = {fg=P.base08,          bg=nil,      attr=nil, sp=nil} -- Special
-H.SpecialChar = {fg=P.base0F,    bg=nil,      attr=nil, sp=nil} -- Special
-H.SpecialComment = {fg=P.base0C, bg=nil,      attr=nil, sp=nil} -- Special
-H.Tag = {fg=P.base0A,            bg=nil,      attr=nil, sp=nil} -- Special
-H.Statement = {fg=P.base08,      bg=nil,      attr=nil, sp=nil}
-H.Conditional = {fg=P.base0E,    bg=nil,      attr=nil, sp=nil} -- Statement
-H.Exception = {fg=P.base08,      bg=nil,      attr=nil, sp=nil} -- Statement
-H.Keyword = {fg=P.base0E,        bg=nil,      attr=nil, sp=nil} -- Statement
-H.Label = {fg=P.base0A,          bg=nil,      attr=nil, sp=nil} -- Statement
-H.Repeat = {fg=P.base0A,         bg=nil,      attr=nil, sp=nil} -- Statement
-H.String = {fg=P.base0B,         bg=nil,      attr=nil, sp=nil}
-H.Todo = {fg=P.base0A,           bg=P.base01, attr=nil, sp=nil}
-H.Type = {fg=P.base0A,           bg=nil,      attr=nil, sp=nil}
-H.StorageClass = {fg=P.base0A,   bg=nil,      attr=nil, sp=nil} -- Type
-H.Structure = {fg=P.base0E,      bg=nil,      attr=nil, sp=nil} -- Type
-H.Typedef = {fg=P.base0A,        bg=nil,      attr=nil, sp=nil} -- Type
-H.Variable = {fg=P.base05,       bg=nil,      attr=nil, sp=nil}
-H.Ignore = {fg=P.base0C,         bg=nil,      attr=nil, sp=nil}
+H.Comment = { fg = P.base03, bg = nil, attr = nil, sp = nil } -- was fg=light_grey
+H.Constant = { fg = P.base09, bg = nil, attr = nil, sp = nil }
+H.Boolean = { fg = P.base09, bg = nil, attr = nil, sp = nil } -- Constant
+H.Character = { fg = P.base08, bg = nil, attr = nil, sp = nil } -- Constant
+H.Number = { fg = P.base09, bg = nil, attr = nil, sp = nil } -- Constant
+H.Float = { fg = P.base09, bg = nil, attr = nil, sp = nil } -- Constant
+H.Delimiter = { fg = P.base0F, bg = nil, attr = nil, sp = nil }
+H.Error = { fg = P.base00, bg = P.base08, attr = nil, sp = nil }
+H.Function = { fg = P.base0D, bg = nil, attr = nil, sp = nil }
+H.Identifier = { fg = P.base08, bg = nil, attr = nil, sp = nil }
+H.Operator = { fg = P.base05, bg = nil, attr = nil, sp = nil }
+H.PreProc = { fg = P.base0A, bg = nil, attr = nil, sp = nil }
+H.Define = { fg = P.base0E, bg = nil, attr = nil, sp = nil } -- PreProc
+H.Include = { fg = P.base0D, bg = nil, attr = nil, sp = nil } -- PreProc
+H.Macro = { fg = P.base08, bg = nil, attr = nil, sp = nil } -- PreProc
+H.PreCondit = { fg = P.base0A, bg = nil, attr = nil, sp = nil } -- PreProc
+H.Special = { fg = P.base0C, bg = nil, attr = nil, sp = nil }
+H.Debug = { fg = P.base08, bg = nil, attr = nil, sp = nil } -- Special
+H.SpecialChar = { fg = P.base0F, bg = nil, attr = nil, sp = nil } -- Special
+H.SpecialComment = { fg = P.base0C, bg = nil, attr = nil, sp = nil } -- Special
+H.Tag = { fg = P.base0A, bg = nil, attr = nil, sp = nil } -- Special
+H.Statement = { fg = P.base08, bg = nil, attr = nil, sp = nil }
+H.Conditional = { fg = P.base0E, bg = nil, attr = nil, sp = nil } -- Statement
+H.Exception = { fg = P.base08, bg = nil, attr = nil, sp = nil } -- Statement
+H.Keyword = { fg = P.base0E, bg = nil, attr = nil, sp = nil } -- Statement
+H.Label = { fg = P.base0A, bg = nil, attr = nil, sp = nil } -- Statement
+H.Repeat = { fg = P.base0A, bg = nil, attr = nil, sp = nil } -- Statement
+H.String = { fg = P.base0B, bg = nil, attr = nil, sp = nil }
+H.Todo = { fg = P.base0A, bg = P.base01, attr = nil, sp = nil }
+H.Type = { fg = P.base0A, bg = nil, attr = nil, sp = nil }
+H.StorageClass = { fg = P.base0A, bg = nil, attr = nil, sp = nil } -- Type
+H.Structure = { fg = P.base0E, bg = nil, attr = nil, sp = nil } -- Type
+H.Typedef = { fg = P.base0A, bg = nil, attr = nil, sp = nil } -- Type
+H.Variable = { fg = P.base05, bg = nil, attr = nil, sp = nil }
+H.Ignore = { fg = P.base0C, bg = nil, attr = nil, sp = nil }
 
 -- Diff
-H.Added = {fg=P.green,           bg=nil,                  attr=nil, sp=nil} -- was fg=base0B
-H.Changed = {fg=P.yellow,        bg=nil,                  attr=nil, sp=nil} -- was fg=base0E
-H.Removed = {fg=P.red,           bg=nil,                  attr=nil, sp=nil} -- was fg=base08
-H.DiffAdd = {fg=P.green,         bg=H.blend(P.green,      P.black,  90), attr=nil, sp=nil}
-H.DiffChange = {fg=P.light_grey, bg=H.blend(P.light_grey, P.black,  90), attr=nil, sp=nil} -- was fg=base0E bg=base01
-H.DiffDelete = {fg=P.red,        bg=H.blend(P.red,        P.black,  90), attr=nil, sp=nil} -- was fg=base08 bg=base01
-H.DiffText = {fg=P.white,        bg=P.black2,             attr=nil, sp=nil} -- was fg=base0D bg=base01
+H.Added = { fg = P.green, bg = nil, attr = nil, sp = nil } -- was fg=base0B
+H.Changed = { fg = P.yellow, bg = nil, attr = nil, sp = nil } -- was fg=base0E
+H.Removed = { fg = P.red, bg = nil, attr = nil, sp = nil } -- was fg=base08
+H.DiffAdd = { fg = P.green, bg = H.blend(P.green, P.black, 90), attr = nil, sp = nil }
+H.DiffChange = { fg = P.light_grey, bg = H.blend(P.light_grey, P.black, 90), attr = nil, sp = nil } -- was fg=base0E bg=base01
+H.DiffDelete = { fg = P.red, bg = H.blend(P.red, P.black, 90), attr = nil, sp = nil } -- was fg=base08 bg=base01
+H.DiffText = { fg = P.white, bg = P.black2, attr = nil, sp = nil } -- was fg=base0D bg=base01
 
 -- Built-in diagnostic
-H.DiagnosticError = {fg=P.red,    bg=nil, attr=nil, sp=nil} -- was fg=base08
-H.DiagnosticHint = {fg=P.purple, bg=nil, attr=nil, sp=nil} -- was fg=base0D
-H.DiagnosticInfo = {fg=P.green,  bg=nil, attr=nil, sp=nil} -- was fg=base0C
-H.DiagnosticOk = {fg=P.green,  bg=nil, attr=nil, sp=nil} -- was fg=base0B
-H.DiagnosticWarn = {fg=P.yellow, bg=nil, attr=nil, sp=nil} -- was fg=base0E
+H.DiagnosticError = { fg = P.red, bg = nil, attr = nil, sp = nil } -- was fg=base08
+H.DiagnosticHint = { fg = P.purple, bg = nil, attr = nil, sp = nil } -- was fg=base0D
+H.DiagnosticInfo = { fg = P.green, bg = nil, attr = nil, sp = nil } -- was fg=base0C
+H.DiagnosticOk = { fg = P.green, bg = nil, attr = nil, sp = nil } -- was fg=base0B
+H.DiagnosticWarn = { fg = P.yellow, bg = nil, attr = nil, sp = nil } -- was fg=base0E
 
-H.DiagnosticFloatingError = {fg=P.base08, bg=P.black2, attr=nil, sp=nil} -- was fg=base08 bg=base01
-H.DiagnosticFloatingHint = {fg=P.base0D, bg=P.black2, attr=nil, sp=nil} -- was fg=base0D bg=base01
-H.DiagnosticFloatingInfo = {fg=P.base0C, bg=P.black2, attr=nil, sp=nil} -- was fg=base0C bg=base01
-H.DiagnosticFloatingOk = {fg=P.base0B, bg=P.black2, attr=nil, sp=nil} -- was fg=base0B bg=base01
-H.DiagnosticFloatingWarn = {fg=P.base0E, bg=P.black2, attr=nil, sp=nil} -- was fg=base0E bg=base01
+H.DiagnosticFloatingError = { fg = P.base08, bg = P.black2, attr = nil, sp = nil } -- was fg=base08 bg=base01
+H.DiagnosticFloatingHint = { fg = P.base0D, bg = P.black2, attr = nil, sp = nil } -- was fg=base0D bg=base01
+H.DiagnosticFloatingInfo = { fg = P.base0C, bg = P.black2, attr = nil, sp = nil } -- was fg=base0C bg=base01
+H.DiagnosticFloatingOk = { fg = P.base0B, bg = P.black2, attr = nil, sp = nil } -- was fg=base0B bg=base01
+H.DiagnosticFloatingWarn = { fg = P.base0E, bg = P.black2, attr = nil, sp = nil } -- was fg=base0E bg=base01
 
-H.DiagnosticSignError = {link='DiagnosticFloatingError'}
-H.DiagnosticSignHint = {link='DiagnosticFloatingHint'}
-H.DiagnosticSignInfo = {link='DiagnosticFloatingInfo'}
-H.DiagnosticSignOk = {link='DiagnosticFloatingOk'}
-H.DiagnosticSignWarn = {link='DiagnosticFloatingWarn'}
+H.DiagnosticSignError = { link = "DiagnosticFloatingError" }
+H.DiagnosticSignHint = { link = "DiagnosticFloatingHint" }
+H.DiagnosticSignInfo = { link = "DiagnosticFloatingInfo" }
+H.DiagnosticSignOk = { link = "DiagnosticFloatingOk" }
+H.DiagnosticSignWarn = { link = "DiagnosticFloatingWarn" }
 
-H.DiagnosticUnderlineError = {fg=nil, bg=nil, attr='underline', sp=P.base08}
-H.DiagnosticUnderlineHint = {fg=nil, bg=nil, attr='underline', sp=P.base0D}
-H.DiagnosticUnderlineInfo = {fg=nil, bg=nil, attr='underline', sp=P.base0C}
-H.DiagnosticUnderlineOk = {fg=nil, bg=nil, attr='underline', sp=P.base0B}
-H.DiagnosticUnderlineWarn = {fg=nil, bg=nil, attr='underline', sp=P.base0E}
+H.DiagnosticUnderlineError = { fg = nil, bg = nil, attr = "underline", sp = P.base08 }
+H.DiagnosticUnderlineHint = { fg = nil, bg = nil, attr = "underline", sp = P.base0D }
+H.DiagnosticUnderlineInfo = { fg = nil, bg = nil, attr = "underline", sp = P.base0C }
+H.DiagnosticUnderlineOk = { fg = nil, bg = nil, attr = "underline", sp = P.base0B }
+H.DiagnosticUnderlineWarn = { fg = nil, bg = nil, attr = "underline", sp = P.base0E }
 
 -- TODO:
 --
