@@ -210,7 +210,7 @@ return {
   opts = {
     background = {
       light = "latte",
-      dark = "macchiato",
+      dark = "frappe",
     },
     no_italic = false, -- Force no italic
     styles = {
