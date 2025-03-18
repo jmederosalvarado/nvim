@@ -92,7 +92,7 @@ local cat_latte = override({
 }, 0, 1.1, 0.9)
 
 ---@module 'catppuccin'
----@type CtpColors
+---@type CtpColors<string>
 local cat_mocha = override_mocha({
   -- stylua: ignore start
 
@@ -199,7 +199,36 @@ local cat_frappe = override_frappe({
   -- stylua: ignore end
 })
 
--- vim.print(cat_mocha)
+--[[
+
+local ghostty_mocha = {
+  "palette = 0=" .. cat_mocha.surface1,
+  "palette = 1=#f38ba8",
+  "palette = 2=#a6e3a1",
+  "palette = 3=#f9e2af",
+  "palette = 4=#89b4fa",
+  "palette = 5=#f5c2e7",
+  "palette = 6=#94e2d5",
+  "palette = 7=" .. cat_mocha.subtext1,
+  "palette = 8=" .. cat_mocha.surface2,
+  "palette = 9=#f37799",
+  "palette = 10=#89d88b",
+  "palette = 11=#ebd391",
+  "palette = 12=#74a8fc",
+  "palette = 13=#f2aede",
+  "palette = 14=#6bd7ca",
+  "palette = 15=" .. cat_mocha.subtext0,
+  "background = " .. cat_mocha.base,
+  "foreground = " .. cat_mocha.text,
+  "cursor-color = #f5e0dc",
+  "cursor-text = " .. cat_mocha.base,
+  "selection-background = " .. cat_mocha.overlay2, -- #{{ overlay2 | mix(color=base, amount=0.2) }}
+  "selection-foreground = " .. cat_mocha.text,
+}
+
+vim.print(table.concat(ghostty_mocha, "\n"))
+
+]]
 
 ---@type LazySpec
 return {

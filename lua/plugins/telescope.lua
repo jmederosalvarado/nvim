@@ -7,6 +7,7 @@ local spec = {
 
     -- extensions
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    { "nvim-telescope/telescope-ui-select.nvim" },
   },
 }
 
@@ -19,7 +20,6 @@ local telescope_builtin = setmetatable({}, {
 })
 
 spec.keys = {
-  { "<leader>f", telescope_builtin.builtin, desc = "[F]ind builtin functionality" },
   { "<leader><space>", telescope_builtin.buffers, desc = "[ ] Find existing buffers" },
   {
     "<leader>/",
@@ -43,7 +43,7 @@ spec.keys = {
         prompt = "Select diagnostic severity:",
       }, function(choice)
         if choice ~= nil then
-          require("telescope.builting").diagnostics({ severity = vim.diagnostic.severity[choice] })
+          telescope_builtin.diagnostics({ severity = vim.diagnostic.severity[choice] })
         end
       end)
     end,
@@ -77,6 +77,7 @@ spec.opts = {
   },
   extensions = {
     fzf = {},
+    ["ui-select"] = {},
   },
 }
 
