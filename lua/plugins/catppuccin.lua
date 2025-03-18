@@ -30,28 +30,29 @@ local function override_to_target(colors, target_hsluv, target_hex)
   })
 end
 
--- ghostty default background
-local hex, h, s, l = "#282c34", 250.1, 19.6, 17.9
+local base_hex, base_hsl = nil, { 250, 15, 15 } -- custom default background
+-- local base_hex, base_hsl = nil, { 0, 0, 9.3 } -- cursor default background
+-- local base_hex, base_hsl = "#282c34", { 250.1, 19.6, 17.9 } -- ghostty default background
 
 ---Overrides the mocha palette
 ---@param colors CtpColors<{[1]:number, [2]: number, [3]: number}>
 ---@return CtpColors<string>
 local function override_mocha(colors)
-  return override_to_target(colors, { h, s, l - 4 })
+  return override_to_target(colors, { base_hsl[1], base_hsl[2], base_hsl[3] - 4 })
 end
 
 ---Overrides the mocha palette
 ---@param colors CtpColors<{[1]:number, [2]: number, [3]: number}>
 ---@return CtpColors<string>
 local function override_macchiato(colors)
-  return override_to_target(colors, { h, s, l }, hex)
+  return override_to_target(colors, { base_hsl[1], base_hsl[2], base_hsl[3] }, base_hex)
 end
 
 ---Overrides the mocha palette
 ---@param colors CtpColors<{[1]:number, [2]: number, [3]: number}>
 ---@return CtpColors<string>
 local function override_frappe(colors)
-  return override_to_target(colors, { h, s, l + 4 })
+  return override_to_target(colors, { base_hsl[1], base_hsl[2], base_hsl[3] + 4 })
 end
 
 ---@module 'catppuccin'
@@ -198,6 +199,8 @@ local cat_frappe = override_frappe({
   -- stylua: ignore end
 })
 
+-- vim.print(cat_mocha)
+
 ---@type LazySpec
 return {
   "catppuccin/nvim",
@@ -208,10 +211,10 @@ return {
   ---@module 'catppuccin'
   ---@type CatppuccinOptions
   opts = {
-    background = {
-      light = "latte",
-      dark = "frappe",
-    },
+    -- background = {
+    --   light = "latte",
+    --   dark = "macchiato",
+    -- },
     no_italic = false, -- Force no italic
     styles = {
       conditionals = {}, -- default is { "italic" }

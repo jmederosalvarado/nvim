@@ -1,35 +1,39 @@
 ---@type LazySpec
 return {
-  'echasnovski/mini.nvim',
+  "echasnovski/mini.nvim",
   lazy = false,
   keys = {
     {
-      '<leader>hp',
-      function() require('mini.diff').toggle_overlay(0) end,
-      desc = 'Toggle diff overlay in current buffer',
+      "<leader>hp",
+      function()
+        require("mini.diff").toggle_overlay(0)
+      end,
+      desc = "Toggle diff overlay in current buffer",
     },
   },
-  init = function() vim.notify = require('mini.notify').make_notify() end,
+  init = function()
+    vim.notify = require("mini.notify").make_notify()
+  end,
   config = function()
     -- Text Editing
-    require('mini.ai').setup({})
-    require('mini.align').setup({})
+    require("mini.ai").setup({})
+    require("mini.align").setup({})
     -- require("mini.pairs").setup({})
-    require('mini.surround').setup({})
+    require("mini.surround").setup({})
 
     -- General
-    require('mini.bracketed').setup({})
-    require('mini.git').setup({})
-    require('mini.diff').setup({
+    require("mini.bracketed").setup({})
+    require("mini.git").setup({})
+    require("mini.diff").setup({
       view = {
-        style = 'sign',
+        style = "sign",
       },
     })
 
     -- Appearance
-    require('mini.notify').setup({})
+    require("mini.notify").setup({})
 
-    require('mini.statusline').setup({
+    require("mini.statusline").setup({
       content = {
         active = function()
           local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
@@ -44,10 +48,10 @@ return {
 
           return MiniStatusline.combine_groups({
             { hl = mode_hl, strings = { mode } },
-            { hl = 'MiniStatuslineDevinfo', strings = { git } },
-            '%<', -- Mark general truncate point
-            { hl = 'MiniStatuslineFilename', strings = { filename } },
-            '%=', -- End left alignment
+            { hl = "MiniStatuslineDevinfo", strings = { git } },
+            "%<", -- Mark general truncate point
+            { hl = "MiniStatuslineFilename", strings = { filename } },
+            "%=", -- End left alignment
             -- { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
             { hl = mode_hl, strings = { search, location } },
           })
@@ -55,6 +59,6 @@ return {
       },
     })
 
-    require('mini.icons').setup({})
+    require("mini.icons").setup({})
   end,
 }

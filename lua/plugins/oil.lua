@@ -1,21 +1,25 @@
 ---@type LazySpec
 return {
-  'stevearc/oil.nvim',
+  "stevearc/oil.nvim",
   ---@module 'oil'
   ---@type oil.SetupOpts
   opts = {},
-  cmd = 'Oil',
-  event = 'VimEnter',
+  cmd = "Oil",
+  event = "VimEnter",
   keys = {
     {
-      '-',
-      function() require('oil').open() end,
-      desc = 'Open parent directory using Oil',
+      "-",
+      function()
+        require("oil").open()
+      end,
+      desc = "Open parent directory using Oil",
     },
     {
-      '<C-n>',
-      function() require('oil').toggle_float() end,
-      desc = 'Toggle Oil float window',
+      "<C-n>",
+      function()
+        require("oil").toggle_float()
+      end,
+      desc = "Toggle Oil float window",
     },
   },
 
