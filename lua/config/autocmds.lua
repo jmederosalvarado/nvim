@@ -51,6 +51,6 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
-    vim.highlight.on_yank({ on_visual = false })
+    vim.hl.on_yank()
   end,
 })

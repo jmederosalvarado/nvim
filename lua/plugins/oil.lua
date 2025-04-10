@@ -14,13 +14,13 @@ return {
       end,
       desc = "Open parent directory using Oil",
     },
-    {
-      "<C-n>",
-      function()
-        require("oil").toggle_float()
-      end,
-      desc = "Toggle Oil float window",
-    },
+    -- {
+    --   "<C-n>",
+    --   function()
+    --     require("oil").toggle_float()
+    --   end,
+    --   desc = "Toggle Oil float window",
+    -- },
   },
 
   -- Optional dependencies

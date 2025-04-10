@@ -14,7 +14,7 @@ vim.o.mouse = "a"
 vim.o.numberwidth = 2
 vim.o.number = true
 vim.o.relativenumber = true
-vim.o.signcolumn = "yes"
+-- vim.o.signcolumn = "yes"
 
 -- context
 vim.o.cursorline = true
@@ -25,6 +25,7 @@ vim.o.scrolloff = 4
 vim.o.sidescrolloff = 4
 
 -- colors
+-- vim.o.winborder = "solid"
 vim.o.termguicolors = true
 -- vim.o.bg = "dark"
 
@@ -43,6 +44,7 @@ vim.o.fillchars = "eob: "
 vim.o.foldmethod = "manual"
 
 vim.o.cmdheight = 2
+vim.o.ruler = false
 
 -- tabs, spaces and indentation
 vim.o.tabstop = 4 -- tab width in spaces

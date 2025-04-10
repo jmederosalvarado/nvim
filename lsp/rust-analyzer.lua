@@ -2,8 +2,8 @@
 return {
   cmd = { "rust-analyzer" }, -- this should be set in mason config
   filetypes = { "rust" },
-  root_dir = function(callback)
-    local root = vim.fs.root(0, { "Cargo.toml" })
+  root_dir = function(bufnr, callback)
+    local root = vim.fs.root(bufnr, { "Cargo.toml" })
     if root then
       vim.system(
         { "cargo", "metadata", "--no-deps", "--format-version", "1" },

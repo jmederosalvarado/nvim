@@ -1,6 +1,7 @@
 ---@type LazySpec
 local spec = {
   "nvim-telescope/telescope.nvim",
+  enabled = false,
   cmd = "Telescope",
   dependencies = {
     "nvim-lua/plenary.nvim",

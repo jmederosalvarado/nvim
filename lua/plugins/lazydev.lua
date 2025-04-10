@@ -20,8 +20,8 @@ return {
   dependencies = { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
   init = function()
     vim.lsp.config("lua_ls", {
-      root_dir = function(set_root_dir)
-        local ws = require("lazydev").find_workspace()
+      root_dir = function(bufnr, set_root_dir)
+        local ws = require("lazydev").find_workspace(bufnr)
         if ws then
           set_root_dir(ws)
         else

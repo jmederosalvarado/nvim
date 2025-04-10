@@ -75,9 +75,9 @@ local cat_latte = override({
   -- blue      = { 259.84, 95.31, 47.46 }, -- #1e66f5
   -- lavender  = { 261.90, 98.22, 59.89 }, -- #7287fd
 
-  text     = { 262.14, 20.20, 34.29 }, -- #4c4f69
-  subtext1 = { 261.67, 16.40, 40.88 }, -- #5c5f77
-  subtext0 = { 261.16, 14.36, 47.30 }, -- #6c6f85
+  -- text     = { 262.14, 20.20, 34.29 }, -- #4c4f69
+  -- subtext1 = { 261.67, 16.40, 40.88 }, -- #5c5f77
+  -- subtext0 = { 261.16, 14.36, 47.30 }, -- #6c6f85
   overlay2 = { 260.58, 14.28, 53.57 }, -- #7c7f93
   overlay1 = { 259.90, 14.52, 59.70 }, -- #8c8fa1
   overlay0 = { 256.99, 15.39, 66.02 }, -- #9ca0b0
@@ -111,9 +111,9 @@ local cat_mocha = override_mocha({
   -- blue      = { 250.77, 93.17, 72.80 }, -- #89b4fa
   -- lavender  = { 261.02, 98.30, 78.28 }, -- #b4befe
 
-  text     = { 255.71, 71.99, 85.81 }, -- #cdd6f4
-  subtext1 = { 256.17, 43.93, 78.63 }, -- #bac2de
-  subtext0 = { 257.06, 30.81, 70.98 }, -- #a6adc8
+  -- text     = { 255.71, 71.99, 85.81 }, -- #cdd6f4
+  -- subtext1 = { 256.17, 43.93, 78.63 }, -- #bac2de
+  -- subtext0 = { 257.06, 30.81, 70.98 }, -- #a6adc8
   overlay2 = { 257.70, 22.63, 63.51 }, -- #9399b2
   overlay1 = { 258.78, 18.03, 55.50 }, -- #7f849c
   overlay0 = { 259.68, 14.84, 47.62 }, -- #6c7086
@@ -147,9 +147,9 @@ local cat_macchiato = override_macchiato({
 -- blue      = { 253.30, 86.04, 70.75 }, -- #8aadf4
 -- lavender  = { 262.59, 88.25, 78.02 }, -- #b7bdf8
 
-text     = { 256.94, 76.04, 84.86 }, -- #cad3f5
-subtext1 = { 257.42, 48.61, 78.03 }, -- #b8c0e0
-subtext0 = { 256.94, 34.41, 71.01 }, -- #a5adcb
+-- text     = { 256.94, 76.04, 84.86 }, -- #cad3f5
+-- subtext1 = { 257.42, 48.61, 78.03 }, -- #b8c0e0
+-- subtext0 = { 256.94, 34.41, 71.01 }, -- #a5adcb
 overlay2 = { 257.80, 26.67, 63.94 }, -- #939ab7
 overlay1 = { 257.31, 21.01, 56.61 }, -- #8087a2
 overlay0 = { 259.47, 17.58, 48.88 }, -- #6e738d
@@ -183,9 +183,9 @@ local cat_frappe = override_frappe({
   -- blue      = { 254.25, 79.11, 69.82 }, -- #8caaee
   -- lavender  = { 265.25, 77.13, 77.48 }, -- #babbf1
 
-  text     = { 256.88, 77.52, 83.81 }, -- #c6d0f5
-  subtext1 = { 256.45, 52.68, 77.62 }, -- #b5bfe2
-  subtext0 = { 257.79, 37.89, 71.11 }, -- #a5adce
+  -- text     = { 256.88, 77.52, 83.81 }, -- #c6d0f5
+  -- subtext1 = { 256.45, 52.68, 77.62 }, -- #b5bfe2
+  -- subtext0 = { 257.79, 37.89, 71.11 }, -- #a5adce
   overlay2 = { 257.36, 29.24, 64.69 }, -- #949cbb
   overlay1 = { 256.54, 22.60, 58.11 }, -- #838ba7
   overlay0 = { 258.55, 18.99, 51.22 }, -- #737994
@@ -276,6 +276,7 @@ return {
           background = true,
         },
       },
+      snacks = true,
       treesitter = true,
       treesitter_context = true,
       telescope = { enabled = true },
@@ -291,12 +292,20 @@ return {
     },
     custom_highlights = function(colors)
       return {
-        DiagnosticSignError = { style = { "reverse" } },
-        DiagnosticSignWarn = { style = { "reverse" } },
-        DiagnosticSignInfo = { style = { "reverse" } },
-        DiagnosticSignHint = { style = { "reverse" } },
+        -- TreesitterContextBottom = { style = {} },
 
-        TreesitterContextBottom = { style = {} },
+        -- FloatBorder = { link = "NormalFloat" },
+        -- NormalFloat = { link = "FloatBorder" },
+
+        SnacksPickerInput = { link = "Normal" },
+        -- SnacksPickerList = { link = "Normal" },
+        SnacksPickerPreview = { link = "Normal" },
+
+        DiagnosticVirtualLinesError = { link = "DiagnosticVirtualTextError" },
+        DiagnosticVirtualLinesWarn = { link = "DiagnosticVirtualTextWarn" },
+        DiagnosticVirtualLinesInfo = { link = "DiagnosticVirtualTextInfo" },
+        DiagnosticVirtualLinesHint = { link = "DiagnosticVirtualTextHint" },
+        DiagnosticVirtualLinesOk = { link = "DiagnosticVirtualTextOk" },
       }
     end,
   },

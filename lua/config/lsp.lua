@@ -16,6 +16,11 @@ local on_attach = function(client, bufnr)
 
   map("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
   map("gt", vim.lsp.buf.type_definition, "Type [D]efinition")
+
+  -- vim.lsp.completion.enable(true, client.id, bufnr, {
+  --   autotrigger = true,
+  --   -- convert = function(item) end,
+  -- })
 end
 
 vim.api.nvim_create_autocmd("LspAttach", {
