@@ -12,7 +12,7 @@ return {
     },
   },
   init = function()
-    vim.notify = require("mini.notify").make_notify()
+    -- vim.notify = require("mini.notify").make_notify()
   end,
   config = function()
     -- Text Editing

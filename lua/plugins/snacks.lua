@@ -62,7 +62,7 @@ return {
           id = "lsp_progress",
           title = client.name,
           opts = function(notif)
-            notif.icon = #progress[client.id] == 0 and " "
+            notif.icon = #progress[client.id] == 0 and ""
               or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
           end,
         })
