@@ -59,6 +59,6 @@ return {
     --   },
     -- })
 
-    require("mini.icons").setup({})
+    require("mini.icons").setup({ style = "ascii" })
   end,
 }

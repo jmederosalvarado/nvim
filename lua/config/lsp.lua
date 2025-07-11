@@ -15,7 +15,7 @@ local on_attach = function(client, bufnr)
   end
 
   map("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-  map("gt", vim.lsp.buf.type_definition, "Type [D]efinition")
+  map("gy", vim.lsp.buf.type_definition, "Type [D]efinition")
 
   -- vim.lsp.completion.enable(true, client.id, bufnr, {
   --   autotrigger = true,
@@ -34,4 +34,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-vim.lsp.enable({ "lua_ls", "rust_analyzer", "gopls" })
+-- vim.lsp.config("basedpyright", {
+--   cmd = { "uvx", "--from", "basedpyright", "basedpyright-langserver", "--stdio" },
+-- })
+vim.lsp.config("ruff", {
+  cmd = { "uvx", "ruff", "server" },
+})
+
+vim.lsp.enable({ "lua_ls", "rust_analyzer", "gopls", "basedpyright", "ruff", "taplo" })

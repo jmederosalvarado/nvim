@@ -102,7 +102,7 @@ return {
       desc = "[F]ind [F]iles",
     },
     {
-      "<leader>/",
+      "g/",
       function()
         Snacks.picker.grep()
       end,
@@ -110,7 +110,7 @@ return {
       desc = "Grep in cwd",
     },
     {
-      "<leader>/",
+      "g/",
       function()
         Snacks.picker.grep_word()
       end,
