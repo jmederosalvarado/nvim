@@ -18,10 +18,7 @@ end
 ---@param target_hex string?
 ---@return CtpColors<string>
 local function override_to_target(colors, target_hsluv, target_hex)
-  local h, s, l =
-    target_hsluv[1] - colors.base[1],
-    target_hsluv[2] / colors.base[2],
-    target_hsluv[3] / colors.base[3]
+  local h, s, l = target_hsluv[1] - colors.base[1], target_hsluv[2] / colors.base[2], target_hsluv[3] / colors.base[3]
 
   local overriden = override(colors, h, s, l)
 
@@ -246,43 +243,39 @@ return {
     -- },
     no_italic = false, -- Force no italic
     styles = {
+      comments = { "italic" }, -- Change the style of comments
       conditionals = {}, -- default is { "italic" }
+      loops = {},
+      functions = {},
+      keywords = {},
+      strings = {},
+      variables = {},
+      numbers = {},
+      booleans = {},
+      properties = {},
+      types = {},
+      operators = {},
+      miscs = {},
     },
-    default_integrations = false,
+    auto_integrations = true,
     integrations = {
-      blink_cmp = true,
-      -- gitsigns = true,
-      harpoon = true,
-      -- markdown = true,
-      mason = true,
-      mini = {
-        enabled = true,
-      },
       native_lsp = {
         enabled = true,
         virtual_text = {
           errors = {},
-          hints = {},
           warnings = {},
           information = {},
+          hints = {},
+          ok = {},
         },
         underlines = {
-          errors = { "underline" },
-          hints = { "underline" },
-          warnings = { "underline" },
-          information = { "underline" },
-        },
-        inlay_hints = {
-          background = true,
+          errors = { "undercurl" },
+          warnings = { "undercurl" },
+          information = { "undercurl" },
+          hints = { "undercurl" },
+          ok = { "undercurl" },
         },
       },
-      snacks = true,
-      treesitter = true,
-      treesitter_context = true,
-      telescope = { enabled = true },
-
-      -- noice = true,
-      -- snacks = { enabled = true },
     },
     color_overrides = {
       latte = cat_latte,
@@ -290,24 +283,6 @@ return {
       macchiato = cat_macchiato,
       frappe = cat_frappe,
     },
-    custom_highlights = function(colors)
-      return {
-        -- TreesitterContextBottom = { style = {} },
-
-        -- FloatBorder = { link = "NormalFloat" },
-        -- NormalFloat = { link = "FloatBorder" },
-
-        SnacksPickerInput = { link = "Normal" },
-        -- SnacksPickerList = { link = "Normal" },
-        SnacksPickerPreview = { link = "Normal" },
-
-        DiagnosticVirtualLinesError = { link = "DiagnosticVirtualTextError" },
-        DiagnosticVirtualLinesWarn = { link = "DiagnosticVirtualTextWarn" },
-        DiagnosticVirtualLinesInfo = { link = "DiagnosticVirtualTextInfo" },
-        DiagnosticVirtualLinesHint = { link = "DiagnosticVirtualTextHint" },
-        DiagnosticVirtualLinesOk = { link = "DiagnosticVirtualTextOk" },
-      }
-    end,
   },
   config = function(self, opts)
     require("catppuccin").setup(opts)

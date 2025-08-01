@@ -32,12 +32,13 @@ local function create_autocmd_lsp_progress()
         return table.insert(msg, v.msg) or not v.done
       end, p)
 
-      local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+      -- local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+      local spinner = { "", "", "", "", "", "" }
       vim.notify(table.concat(msg, "\n"), "info", {
         id = "lsp_progress",
         title = client.name,
         opts = function(notif)
-          notif.icon = #progress[client.id] == 0 and ""
+          notif.icon = #progress[client.id] == 0 and "✔"
             or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
         end,
       })

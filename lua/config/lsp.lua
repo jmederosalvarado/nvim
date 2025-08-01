@@ -10,7 +10,7 @@ local on_attach = function(client, bufnr)
     vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
   end
 
-  if client.name == "rust-analyzer" and not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }) then
+  if client.name == "rust_analyzer" and not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }) then
     vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
   end
 
@@ -39,6 +39,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
 -- })
 vim.lsp.config("ruff", {
   cmd = { "uvx", "ruff", "server" },
+})
+vim.lsp.config("rust_analyzer", {
+  settings = {
+    ["rust-analyzer"] = {
+      check = {
+        command = "clippy",
+        workspace = false,
+      },
+    },
+  },
 })
 
 vim.lsp.enable({ "lua_ls", "rust_analyzer", "gopls", "basedpyright", "ruff", "taplo" })
