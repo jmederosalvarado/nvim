@@ -4,6 +4,6 @@ return {
   cmd = { "G", "Git", "GBrowse" },
   dependencies = { "tpope/vim-rhubarb" },
   keys = {
-    { "<leader>gs", "<Cmd>Git<CR>", desc = "Fu[G]itive [S]tatus" },
+    { "<Leader>gs", "<Cmd>Git<CR>", desc = "Fu[G]itive [S]tatus" },
   },
 }

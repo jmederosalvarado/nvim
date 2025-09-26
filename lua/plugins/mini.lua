@@ -45,14 +45,14 @@ return {
   end,
   config = function()
     -- Text Editing
-    require("mini.ai").setup({})
-    require("mini.align").setup({})
-    -- require("mini.pairs").setup({})
-    require("mini.surround").setup({})
+    require("mini.ai").setup()
+    require("mini.align").setup()
+    -- require("mini.pairs").setup()
+    require("mini.surround").setup()
 
     -- General
-    require("mini.bracketed").setup({})
-    require("mini.git").setup({})
+    require("mini.bracketed").setup()
+    require("mini.git").setup()
     require("mini.diff").setup({
       view = {
         style = "sign",
@@ -87,6 +87,29 @@ return {
     --     end,
     --   },
     -- })
+
+    require("mini.pick").setup({
+      options = {
+        content_from_bottom = true,
+      },
+      -- Window related options
+      window = {
+        -- Float window config (table or callable returning it)
+        -- config = function()
+        --   ---@type vim.api.keyset.win_config
+        --   return {
+        --     width = vim.o.columns,
+        --     height = math.max(vim.o.lines / 4, 10),
+        --   }
+        -- end,
+
+        -- String to use as caret in prompt
+        prompt_caret = "▏",
+
+        -- String to use as prefix in prompt
+        prompt_prefix = "❯ ",
+      },
+    })
 
     require("mini.icons").setup({ style = "ascii" })
     local mini_icons_get = MiniIcons.get

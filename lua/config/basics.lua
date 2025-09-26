@@ -25,6 +25,7 @@ vim.opt.sidescrolloff = 4
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
+vim.opt.ruler = false
 
 -- Decrease timouts and update times
 vim.o.timeoutlen = 300 -- Time to wait for a mapped sequence to complete
@@ -56,7 +57,8 @@ vim.opt.fillchars = { eob = " " }
 vim.opt.completeopt = { "fuzzy", "menuone", "noselect", "popup" }
 
 -- Set default float window border
-vim.opt.winborder = "solid"
+-- vim.opt.winborder = "solid"
+vim.opt.winborder = "single"
 
 -- Set <SPACE> as the leader key
 vim.g.mapleader = " "

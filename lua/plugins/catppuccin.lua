@@ -19,9 +19,6 @@ end
 ---@return CtpColors<string>
 local function override_to_target(colors, target_hsluv, target_hex)
   local h, s, l = target_hsluv[1] - colors.base[1], target_hsluv[2] / colors.base[2], target_hsluv[3] / colors.base[3]
-
-  local overriden = override(colors, h, s, l)
-
   return vim.tbl_extend("force", override(colors, h, s, l), {
     base = target_hex or hsluv.hsluv_to_hex(target_hsluv),
   })
@@ -231,16 +228,20 @@ vim.print(table.concat(ghostty_mocha, "\n"))
 return {
   "catppuccin/nvim",
   name = "catppuccin",
-  enabled = true,
+  -- enabled = false,
   priority = 100,
   lazy = false,
   ---@module 'catppuccin'
   ---@type CatppuccinOptions
   opts = {
-    -- background = {
-    --   light = "latte",
-    --   dark = "macchiato",
-    -- },
+    background = {
+      light = "latte",
+      dark = "frappe",
+    },
+    float = {
+      solid = false,
+      transparent = true,
+    },
     no_italic = false, -- Force no italic
     styles = {
       comments = { "italic" }, -- Change the style of comments
@@ -283,7 +284,15 @@ return {
       macchiato = cat_macchiato,
       frappe = cat_frappe,
     },
+
+    --- @diagnostic disable-next-line: unused-local
+    custom_highlights = function(colors)
+      return {
+        -- SnacksPickerPreview = { link = "Normal" },
+      }
+    end,
   },
+  --- @diagnostic disable-next-line: unused-local
   config = function(self, opts)
     require("catppuccin").setup(opts)
     vim.cmd.colorscheme("catppuccin")

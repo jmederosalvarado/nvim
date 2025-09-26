@@ -54,7 +54,7 @@ end
 
 spec.keys = {
   {
-    "<leader>fm",
+    "<Leader>fm",
     function()
       require("conform").format({ async = true })
     end,

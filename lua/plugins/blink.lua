@@ -24,10 +24,7 @@ return {
           -- We don't need label_description now because label and label_description are already
           -- combined together in label by colorful-menu.nvim.
           columns = {
-            {
-              "kind_icon", --[["kind",]]
-              gap = 1,
-            },
+            { "kind", gap = 1 },
             { "label" },
           },
           components = {
@@ -36,6 +33,11 @@ return {
               text = function(ctx)
                 local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
                 return kind_icon
+              end,
+            },
+            kind = {
+              text = function(ctx)
+                return "[" .. ctx.kind .. "]"
               end,
             },
             label = {
