@@ -14,6 +14,7 @@ spec.opts = {
     html = { "prettierd" },
     javascript = { "prettierd" },
     typescript = { "prettierd" },
+    json = { "prettierd" },
     rust = { "rustfmt", lsp_format = "fallback" },
     python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
     toml = { "taplo" },
