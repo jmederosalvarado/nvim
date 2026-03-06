@@ -27,7 +27,7 @@ vim.diagnostic.config({
       [vim.diagnostic.severity.HINT] = "🅗",
     },
   },
-  -- severity_sort = true,
+  severity_sort = true,
 })
 
 -- Alternate between showing virtual lines and virtual text

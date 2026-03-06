@@ -83,4 +83,4 @@ vim.lsp.config("rust_analyzer", {
 })
 
 -- Enable language servers
-vim.lsp.enable({ "lua_ls", "gopls", "rust_analyzer", "taplo" })
+vim.lsp.enable({ "lua_ls", "rust_analyzer", "taplo" })

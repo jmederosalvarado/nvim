@@ -45,6 +45,7 @@ vim.o.inccommand = "split"
 
 vim.o.swapfile = false -- Swap file
 vim.o.undofile = true -- Persist undo history between editing sessions
+vim.o.autoread = true -- Reload file when changed outside Neovim
 
 -- Show some useful charaters that would normally be invisible (e.g. tabs, spaces)
 vim.opt.list = true
