@@ -3,7 +3,9 @@ if #installed == 0 then
   return
 end
 
-require("treesitter-context").setup({})
+require("treesitter-context").setup({
+  multiwindow = true,
+})
 
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("tssetup", { clear = true }),
