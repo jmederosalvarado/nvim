@@ -45,6 +45,7 @@ local plugins = {
   "https://github.com/olimorris/persisted.nvim",
   "https://github.com/folke/snacks.nvim",
   "https://github.com/nvim-treesitter/nvim-treesitter",
+  "https://github.com/nvim-treesitter/nvim-treesitter-context",
   "https://github.com/nvim-telescope/telescope.nvim",
   "https://github.com/nvim-telescope/telescope-fzf-native.nvim",
 }

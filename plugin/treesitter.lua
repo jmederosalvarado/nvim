@@ -3,6 +3,8 @@ if #installed == 0 then
   return
 end
 
+require("treesitter-context").setup({})
+
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("tssetup", { clear = true }),
   desc = "Enable Treesitter features when a parser is installed",
