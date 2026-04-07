@@ -5,6 +5,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
     local client = assert(vim.lsp.get_client_by_id(args.data.client_id), "Couldn't get LSP client from id")
 
     vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+    vim.keymap.set("i", "<C-Space>", function()
+      vim.lsp.completion.get()
+    end, { desc = "Use CTRL-space to trigger LSP completion" })
 
     -- Enable inlay hints for servers with support
     if client.server_capabilities.inlayHintProvider then
