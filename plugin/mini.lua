@@ -41,6 +41,8 @@ require("mini.diff").setup({
     style = "sign",
   },
 })
+require("mini.indentscope").setup()
+require("mini.notify").setup()
 
 require("mini.icons").setup({ style = "ascii" })
 
