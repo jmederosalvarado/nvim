@@ -111,8 +111,8 @@ vim.api.nvim_create_autocmd("TermOpen", {
 -- Change indentation settings for some file types
 --     lua: indent using 2 spaces
 vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("ftident", { clear = true }),
-  desc = "Change identing on certain filetypes",
+  group = vim.api.nvim_create_augroup("ftindent", { clear = true }),
+  desc = "Change indenting on certain filetypes",
   pattern = { "lua" },
   callback = function()
     vim.bo.tabstop = 2
