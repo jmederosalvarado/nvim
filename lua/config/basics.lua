@@ -54,9 +54,7 @@ vim.opt.listchars = { trail = "·", tab = "» " }
 -- Configure some special charaters (usually for UI element)
 vim.opt.fillchars = { eob = " " }
 
--- Use Treesitter expressions for folding, but keep folds open by default.
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+-- Keep folds open by default.
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 

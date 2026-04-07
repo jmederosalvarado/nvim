@@ -1,0 +1,22 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "runtime.version": "LuaJIT",
+  "runtime.pathStrict": true,
+  "runtime.path": [
+    "lua/?.lua",
+    "lua/?/init.lua"
+  ],
+  "workspace.checkThirdParty": false,
+  "workspace.library": [
+    "${env:VIMRUNTIME}",
+    "${3rd}/luv/library",
+    "${env:HOME}/.local/share/nvim-vim-pack/site/pack/core/opt",
+    "${env:HOME}/.local/share/nvim-vim-pack/site/pack/core/start"
+  ],
+  "workspace.maxPreload": 10000,
+  "workspace.preloadFileSize": 1000,
+  "diagnostics.globals": [
+    "vim"
+  ],
+  "diagnostics.libraryFiles": "Opened"
+}

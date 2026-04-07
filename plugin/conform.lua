@@ -1,12 +1,10 @@
----@type LazySpec
-local spec = {
-  "stevearc/conform.nvim",
-  cmd = "ConformInfo",
-}
+vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 
----@module 'conform'
----@type conform.setupOpts
-spec.opts = {
+vim.keymap.set("n", "<Leader>fm", function()
+  require("conform").format({ async = true })
+end, { desc = "Format buffer" })
+
+require("conform").setup({
   formatters_by_ft = {
     lua = { "stylua" },
     zig = { "zigfmt" },
@@ -46,21 +44,4 @@ spec.opts = {
       prepend_args = { "ruff" },
     },
   },
-}
-
-spec.init = function()
-  -- If you want the formatexpr, here is the place to set it
-  vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
-end
-
-spec.keys = {
-  {
-    "<Leader>fm",
-    function()
-      require("conform").format({ async = true })
-    end,
-    desc = "Format buffer",
-  },
-}
-
-return spec
+})
