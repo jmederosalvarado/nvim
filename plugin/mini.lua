@@ -3,7 +3,6 @@ require("mini.align").setup()
 require("mini.surround").setup()
 
 require("mini.bracketed").setup()
-require("mini.indentscope").setup()
 require("mini.notify").setup()
 
 require("mini.diff").setup({
