@@ -10,6 +10,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
     if client.server_capabilities.inlayHintProvider then
       vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
     end
+
+    -- Enable code lenses for servers with support
+    if client.server_capabilities.codeLensProvider then
+      vim.lsp.codelens.enable(true, { bufnr = args.buf })
+    end
   end,
 })
 
