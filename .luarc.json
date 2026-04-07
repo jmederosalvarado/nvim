@@ -10,8 +10,8 @@
   "workspace.library": [
     "${env:VIMRUNTIME}",
     "${3rd}/luv/library",
-    "${env:HOME}/.local/share/nvim-vim-pack/site/pack/core/opt",
-    "${env:HOME}/.local/share/nvim-vim-pack/site/pack/core/start"
+    "${env:HOME}/.local/share/nvim/site/pack/core/opt",
+    "${env:HOME}/.local/share/nvim/site/pack/core/start"
   ],
   "workspace.maxPreload": 10000,
   "workspace.preloadFileSize": 1000,
