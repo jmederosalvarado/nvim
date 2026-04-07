@@ -8,9 +8,10 @@ vim.api.nvim_create_autocmd("PackChanged", {
   group = vim.api.nvim_create_augroup("pack_hooks", { clear = true }),
   callback = function(ev)
     local name = ev.data.spec.name
-    local kind = ev.data.kind
+    local is_install = ev.data.kind == "install"
+    local is_update = ev.data.kind == "update"
 
-    if name == "telescope-fzf-native.nvim" and (kind == "install" or kind == "update") then
+    if name == "telescope-fzf-native.nvim" and (is_install or is_update) then
       if vim.fn.executable("make") ~= 1 then
         vim.notify("Skipping telescope-fzf-native.nvim build because 'make' is unavailable.", vim.log.levels.WARN)
         return
@@ -18,8 +19,14 @@ vim.api.nvim_create_autocmd("PackChanged", {
 
       local result = vim.system({ "make" }, { cwd = pack_plugin_path(name) }):wait()
       if result.code ~= 0 then
-        vim.notify(result.stderr and result.stderr or "Failed building telescope-fzf-native.nvim", vim.log.levels.ERROR)
+        local msg = result.stderr and result.stderr or "Failed building telescope-fzf-native.nvim"
+        vim.notify(msg, vim.log.levels.ERROR)
       end
+    end
+
+    if name == "nvim-treesitter" and (is_install or is_update) then
+      vim.cmd.packadd(name)
+      require("nvim-treesitter").update(nil, { summary = true }):wait()
     end
   end,
 })
@@ -37,6 +44,7 @@ local plugins = {
   "https://github.com/stevearc/oil.nvim",
   "https://github.com/olimorris/persisted.nvim",
   "https://github.com/folke/snacks.nvim",
+  "https://github.com/nvim-treesitter/nvim-treesitter",
   "https://github.com/nvim-telescope/telescope.nvim",
   "https://github.com/nvim-telescope/telescope-fzf-native.nvim",
 }
