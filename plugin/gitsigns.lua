@@ -25,8 +25,8 @@ require("gitsigns").setup({
     end, "Go to last hunk")
 
     map("n", "<leader>hp", function()
-      gitsigns.preview_hunk_inline()
-    end, "Preview hunk inline")
+      gitsigns.preview_hunk()
+    end, "Preview hunk")
 
     map("n", "=", function()
       gitsigns.preview_hunk_inline()
