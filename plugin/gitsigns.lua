@@ -1,4 +1,6 @@
 require("gitsigns").setup({
+  attach_to_untracked = true,
+  -- word_diff = true,
   on_attach = function(bufnr)
     local gitsigns = require("gitsigns")
 
@@ -23,6 +25,10 @@ require("gitsigns").setup({
     end, "Go to last hunk")
 
     map("n", "<leader>hp", function()
+      gitsigns.preview_hunk_inline()
+    end, "Preview hunk inline")
+
+    map("n", "=", function()
       gitsigns.preview_hunk_inline()
     end, "Preview hunk inline")
 
