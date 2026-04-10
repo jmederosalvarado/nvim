@@ -15,9 +15,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 
     -- Enable code lenses for servers with support
-    if client.server_capabilities.codeLensProvider then
-      vim.lsp.codelens.enable(true, { bufnr = args.buf })
-    end
+    -- if client.server_capabilities.codeLensProvider then
+    --   vim.lsp.codelens.enable(true, { bufnr = args.buf })
+    -- end
   end,
 })
 
