@@ -33,6 +33,7 @@ vim.api.nvim_create_autocmd("PackChanged", {
 
 local plugins = {
   "https://github.com/echasnovski/mini.nvim",
+  "https://github.com/lewis6991/gitsigns.nvim",
   "https://github.com/neovim/nvim-lspconfig",
   "https://github.com/williamboman/mason.nvim",
   "https://github.com/stevearc/conform.nvim",
