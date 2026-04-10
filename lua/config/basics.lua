@@ -57,6 +57,7 @@ vim.opt.fillchars = { eob = " " }
 -- Keep folds open by default.
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
+vim.opt.foldopen:remove("search")
 
 -- Configure completion
 vim.opt.completeopt = { "fuzzy", "menuone", "noselect", "popup" }
