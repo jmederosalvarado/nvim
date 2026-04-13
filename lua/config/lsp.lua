@@ -30,6 +30,9 @@ vim.lsp.config("rust_analyzer", {
         command = "clippy",
         workspace = false,
       },
+      references = {
+        excludeImports = true,
+      },
     },
   },
 })
