@@ -23,11 +23,6 @@ vim.g.maplocalleader = " "
 
 -- Package management via vim.pack
 
-local pack_dir = vim.fn.stdpath("data") .. "/site/pack/core/opt"
-local function pack_path(name)
-  return vim.fs.joinpath(pack_dir, name)
-end
-
 -- Define hooks for package change events.
 vim.api.nvim_create_autocmd("PackChanged", {
   group = vim.api.nvim_create_augroup("pack_hooks", { clear = true }),
@@ -37,12 +32,7 @@ vim.api.nvim_create_autocmd("PackChanged", {
     local is_update = ev.data.kind == "update"
 
     if name == "telescope-fzf-native.nvim" and (is_install or is_update) then
-      if vim.fn.executable("make") ~= 1 then
-        vim.notify("Skipping telescope-fzf-native.nvim build because 'make' is unavailable.", vim.log.levels.WARN)
-        return
-      end
-
-      local result = vim.system({ "make" }, { cwd = pack_path(name) }):wait()
+      local result = vim.system({ "make" }, { cwd = ev.data.path }):wait()
       if result.code ~= 0 then
         vim.notify("Failed building telescope-fzf-native.nvim: " .. result.stderr, vim.log.levels.ERROR)
       end
