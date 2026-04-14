@@ -22,21 +22,5 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
--- Configure Rust Analyzer
-vim.lsp.config("rust_analyzer", {
-  settings = {
-    ["rust-analyzer"] = {
-      check = {
-        allTargets = true,
-        command = "clippy",
-        workspace = false,
-      },
-      references = {
-        excludeImports = true,
-      },
-    },
-  },
-})
-
 -- Enable language servers
 vim.lsp.enable({ "lua_ls", "rust_analyzer", "taplo" })
