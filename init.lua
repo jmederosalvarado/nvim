@@ -21,8 +21,6 @@ vim.g.loaded_zipPlugin = 1 -- browse/edit zip archives
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- Package management via vim.pack
-
 -- Define hooks for package change events.
 vim.api.nvim_create_autocmd("PackChanged", {
   group = vim.api.nvim_create_augroup("pack_hooks", { clear = true }),
@@ -47,6 +45,7 @@ vim.api.nvim_create_autocmd("PackChanged", {
 
 local gh = "https://github.com/"
 
+-- Add plugins using `vim.pack`.
 vim.pack.add({
   gh .. "echasnovski/mini.nvim",
   gh .. "lewis6991/gitsigns.nvim",
