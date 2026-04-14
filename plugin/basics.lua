@@ -66,10 +66,6 @@ vim.opt.completeopt = { "fuzzy", "menuone", "noselect", "popup" }
 -- vim.opt.winborder = "solid"
 vim.opt.winborder = "single"
 
--- Set <SPACE> as the leader key
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = vim.api.nvim_create_augroup("hl_on_yank", { clear = true }),
@@ -106,29 +102,6 @@ vim.api.nvim_create_autocmd("TermOpen", {
   callback = function()
     vim.wo.number = false
     vim.wo.relativenumber = false
-  end,
-})
-
--- Change indentation settings for some file types
---     lua: indent using 2 spaces
-vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("ftindent", { clear = true }),
-  desc = "Change indenting on certain filetypes",
-  pattern = { "lua" },
-  callback = function()
-    vim.bo.tabstop = 2
-    vim.bo.shiftwidth = 2
-    vim.bo.softtabstop = 2
-  end,
-})
-
--- Set jsonc filetype for json files
-vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
-  group = vim.api.nvim_create_augroup("json2jsonc", { clear = true }),
-  desc = "Set jsonc filetype for json files",
-  pattern = { "*.json" },
-  callback = function()
-    vim.bo.filetype = "jsonc"
   end,
 })
 

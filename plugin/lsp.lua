@@ -4,6 +4,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     local client = assert(vim.lsp.get_client_by_id(args.data.client_id), "Couldn't get LSP client from id")
 
+    -- Enable builtin vim.lsp completion
     vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
     vim.keymap.set("i", "<C-Space>", function()
       vim.lsp.completion.get()
