@@ -49,6 +49,7 @@ local gh = "https://github.com/"
 vim.pack.add({
   gh .. "echasnovski/mini.nvim",
   gh .. "lewis6991/gitsigns.nvim",
+  gh .. "kevinhwang91/nvim-bqf",
   gh .. "neovim/nvim-lspconfig",
   gh .. "williamboman/mason.nvim",
   gh .. "stevearc/conform.nvim",
