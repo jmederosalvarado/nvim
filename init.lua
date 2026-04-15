@@ -59,6 +59,7 @@ vim.pack.add({
   gh .. "nvim-lua/plenary.nvim",
   gh .. "nvim-lualine/lualine.nvim",
   gh .. "stevearc/oil.nvim",
+  gh .. "folke/persistence.nvim",
   gh .. "folke/snacks.nvim",
   gh .. "nvim-treesitter/nvim-treesitter",
   gh .. "nvim-treesitter/nvim-treesitter-context",
