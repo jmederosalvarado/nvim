@@ -10,8 +10,9 @@ require("bqf").setup({
 })
 
 local function set_bqf_hl()
-  vim.api.nvim_set_hl(0, "BqfPreviewFloat", { link = "NormalFloat" }) -- defaults to Normal
-  -- vim.api.nvim_set_hl(0, "BqfPreviewBorder", { link = "BqfPreviewFloat" }) -- defaults to FloatBorder
+  -- vim.api.nvim_set_hl(0, "BqfPreviewTitle", { link = "FloatBorder" }) -- defaults to Title
+  -- vim.api.nvim_set_hl(0, "BqfPreviewFloat", { link = "NormalFloat" }) -- defaults to Normal
+  vim.api.nvim_set_hl(0, "BqfPreviewBorder", { link = "BqfPreviewFloat" }) -- defaults to FloatBorder
 end
 
 set_bqf_hl()

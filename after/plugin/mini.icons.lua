@@ -40,3 +40,5 @@ MiniIcons.get = function(...)
   end
   return icon, hl, is_default
 end
+
+MiniIcons.mock_nvim_web_devicons()

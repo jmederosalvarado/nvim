@@ -1,9 +1,3 @@
-vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
-
-vim.keymap.set("n", "<Leader>fm", function()
-  require("conform").format({ async = true })
-end, { desc = "Format buffer" })
-
 require("conform").setup({
   formatters_by_ft = {
     lua = { "stylua" },
@@ -45,3 +39,9 @@ require("conform").setup({
     },
   },
 })
+
+vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+
+vim.keymap.set("n", "<Leader>fm", function()
+  require("conform").format({ async = true })
+end, { desc = "Format buffer" })

@@ -1,3 +1,5 @@
+require("harpoon"):setup()
+
 vim.keymap.set("n", "<C-a>", function()
   require("harpoon"):list():add()
 end, { desc = "[A]dd file to harpoon" })
@@ -21,5 +23,3 @@ end, { desc = "Switch to harpoon file 3" })
 vim.keymap.set("n", "<C-;>", function()
   require("harpoon"):list():select(4)
 end, { desc = "Switch to harpoon file 4" })
-
-require("harpoon"):setup({})
