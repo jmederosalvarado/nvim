@@ -4,6 +4,8 @@ require("bqf").setup({
     fzffilter = "",
   },
   preview = {
+    auto_preview = false,
+
     border = vim.o.winborder,
     -- winblend = vim.o.winblend,
   },
